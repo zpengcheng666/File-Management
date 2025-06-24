@@ -10,12 +10,4 @@ maven: 3.5
 mysql: 8.0.18
 redis: 7.4.1
 minio: RELEASE.2024-11-07T00-52-20Z
-```
-
-2. 下载编译
-```bash
-git clone ssh://git@dev.aspi.work:65122/aspi/docmanage/docmanage-backend
-cd docmanage-backend
-mvn package
-```
 
