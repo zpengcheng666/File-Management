@@ -1,0 +1,871 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocInfoMapper">
+    
+<resultMap type="DocInfo" id="DocInfoResult">
+        <result property="id"    column="id"    />
+        <result property="category"    column="category"    />
+        <result property="docType"    column="doc_type"    />
+        <result property="oriDocId"    column="ori_doc_id"    />
+        <result property="recieveDept"    column="recieve_dept"    />
+        <result property="title"    column="title"    />
+        <result property="secretLevel"    column="secret_level"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="openAudit"    column="open_audit"    />
+        <result property="writeDate"    column="write_date"    />
+        <result property="assosiatePersons"    column="assosiate_persons"    />
+        <result property="docContentId"    column="doc_content_id"    />
+        <result property="specsubiName"    column="specsubi_name"    />
+        <result property="keywords"    column="keywords"    />
+        <result property="recoder"    column="recoder"    />
+        <result property="recordPlace"    column="record_place"    />
+        <result property="recordDate"    column="record_date"    />
+        <result property="duration"    column="duration"    />
+        <result property="format"    column="format"    />
+        <result property="objFrom"    column="obj_from"    />
+        <result property="resposible"    column="resposible"    />
+        <result property="content"    column="content"    />
+        <result property="hasFile"    column="has_file"    />
+        <result property="pageCnt"    column="page_cnt"    />
+        <result property="status"    column="status"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="boxId"    column="box_id"    />
+        <result property="shelvesStatus"    column="shelves_status"    />
+        <result property="boxName"    column="box_name"    />
+        <result property="archiveStatus"    column="archive_status"    />
+        <result property="reason"    column="reason"    />
+        <result property="attachments"    column="attachments"    />
+        <result property="destroyReason"    column="destroy_reason"    />
+        <result property="remainingDays"    column="remaining_days"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="turnTime"    column="turn_time"    />
+        <result property="recipient"    column="recipient"    />
+        <result property="operator"    column="operator"    />
+        <result property="bringTime"    column="bring_time"    />
+        <result property="checker"    column="checker"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="destroyTime"    column="destroy_time"    />
+        <result property="turnStatus"    column="turn_status"    />
+        <result property="destroyStatus"    column="destroy_status"    />
+        <result property="explains"    column="explains"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="secretName"    column="secret_name"    />
+        <result property="categoryName"    column="category_name"    />
+
+
+  <association property="bizCreateBy" column="create_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizUpdateBy" column="update_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+    </resultMap>
+
+<sql id="refSelectDocCategoryVo69">
+    select id, name, pinyin, parent_id, del_flag, create_by, create_time, update_by, update_time, remark from doc_category
+</sql>
+ <resultMap type="DocCategory" id="DocCategoryResult69">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="pinyin"    column="pinyin"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+</resultMap>
+<select id="refSelectDocCategoryList69" parameterType="DocCategory"
+ resultMap="DocCategoryResult69">
+        <include refid="refSelectDocCategoryVo69"/>
+        <where>
+        id = #{category}
+        </where>
+ </select>
+<sql id="refSelectSysDeptVo94">
+    select dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, del_flag, create_by, create_time, update_by, update_time from doc_dept
+</sql>
+ <resultMap type="SysDept" id="SysDeptResult94">
+        <result property="deptId"    column="dept_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="leader"    column="leader"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+</resultMap>
+<select id="refSelectSysDeptList94" parameterType="SysDept"
+ resultMap="SysDeptResult94">
+        <include refid="refSelectSysDeptVo94"/>
+        <where>
+        $column.refField = #{dept_id}
+        </where>
+ </select>
+    <sql id="selectDocInfoVo">
+        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level,box_id, org_code, open_audit, write_date,
+               assosiate_persons, doc_content_id, specsubi_name, keywords, recoder, record_place, record_date, duration, format,
+               obj_from, resposible, content, has_file, page_cnt, status, dept_id, del_flag, create_by,
+               create_time, update_by, update_time, remark,archive_status,attachments,destroy_reason,remaining_days,turn_time,
+               recipient,operator,bring_time,checker,check_time,destroy_time,turn_status,destroy_status,explains,dept_name,
+               company_name,company_id,secret_name,category_name
+        from doc_info
+    </sql>
+    <select id="selectDocInfoList" parameterType="DocInfo" resultMap="DocInfoResult">
+        <include refid="selectDocInfoVo"/>
+        <where>
+            <if test="category != null "> and category = #{category}</if>
+            <if test="docType != null "> and doc_type = #{docType}</if>
+            <if test="oriDocId != null  and oriDocId != ''"> and oriDocId like concat('%', #{oriDocId}, '%')</if>
+            <if test="recieveDept != null  and recieveDept != ''"> and recieve_dept = #{recieveDept}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="secretLevel != null "> and secret_level = #{secretLevel}</if>
+            <if test="orgCode != null  and orgCode != ''"> and org_code = #{orgCode}</if>
+            <if test="openAudit != null "> and open_audit = #{openAudit}</if>
+            <if test="writeDate != null "> and write_date = #{writeDate}</if>
+            <if test="assosiatePersons != null  and assosiatePersons != ''"> and assosiate_persons = #{assosiatePersons}</if>
+            <if test="docContentId != null  and docContentId != ''"> and doc_content_id = #{docContentId}</if>
+            <if test="specsubiName != null  and specsubiName != ''"> and specsubi_name like concat('%', #{specsubiName}, '%')</if>
+            <if test="keywords != null  and keywords != ''"> and keywords = #{keywords}</if>
+            <if test="recoder != null  and recoder != ''"> and recoder = #{recoder}</if>
+            <if test="recordPlace != null  and recordPlace != ''"> and record_place = #{recordPlace}</if>
+            <if test="recordDate != null "> and record_date = #{recordDate}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="format != null  and format != ''"> and format = #{format}</if>
+            <if test="objFrom != null  and objFrom != ''"> and obj_from = #{objFrom}</if>
+            <if test="resposible != null  and resposible != ''"> and resposible = #{resposible}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="hasFile != null "> and has_file = #{hasFile}</if>
+            <if test="pageCnt != null "> and page_cnt = #{pageCnt}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="boxId != null "> and box_id = #{boxId}</if>
+            <if test="archiveStatus != null "> and archive_status = #{archiveStatus}</if>
+            <if test="remainingDays != null "> and remaining_days = #{remainingDays}</if>
+            <if test="turnTime != null "> and turn_time = #{turnTime}</if>
+            <if test="recipient != null "> and recipient = #{recipient}</if>
+            <if test="operator != null "> and operator = #{operator}</if>
+            <if test="bringTime != null "> and bring_time = #{bringTime}</if>
+            <if test="checker != null "> and checker = #{checker}</if>
+            <if test="checkTime != null "> and check_time = #{checkTime}</if>
+            <if test="destroyTime != null "> and destroy_time = #{destroyTime}</if>
+            <if test="turnStatus != null "> and turn_status = #{turnStatus}</if>
+            <if test="destroyStatus != null "> and destroy_status = #{destroyStatus}</if>
+            <if test="explains != null "> and explains = #{explains}</if>
+            <if test="delFlag != null "> and del_flag = #{delFlag}</if>
+            <if test="deptName != null "> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="companyName != null "> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="companyId != null "> and company_id = #{companyId}</if>
+            <if test="secretName != null "> and secret_name = #{secretName}</if>
+            <if test="categoryName != null "> and category_name = #{categoryName}</if>
+
+        </where>
+    </select>
+
+    <select id="selectDocInfoById" parameterType="Long" resultMap="DocInfoResult">
+        <include refid="selectDocInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectDocInfoByOri" parameterType="java.lang.String" resultMap="DocInfoResult">
+      <include refid="selectDocInfoVo"/>
+      where ori_doc_id = #{oriDocId}
+    </select>
+
+    <select id="queryByCategoryId" parameterType="Long" resultMap="DocInfoResult">
+        <include refid="selectDocInfoVo"/>
+        where category = #{categoryId}
+    </select>
+
+    <select id="shelvesUpStopList" parameterType="DocInfo" resultMap="DocInfoResult">
+        select '待上架' as shelvesStatus,b.box_name,a.ori_doc_id,a.title,a.id from doc_info a
+        left join doc_box b on a.box_id = b.box_id
+        <where>
+            a.shelves_status not in ('1')
+            <if test="title != null  and title != ''">and a.title like concat('%', #{title}, '%')</if>
+            <if test="oriDocId != null  and oriDocId != ''">and a.ori_doc_id like concat('%', #{oriDocId}, '%')</if>
+        </where>
+    </select>
+
+    <select id="shelvesUpList" parameterType="DocInfo" resultMap="DocInfoResult">
+        select '上架' as shelvesStatus,d.nick_name as update_by, a.update_time,a.ori_doc_id,a.title,CONCAT(b.coffers_no,'-',c.shelves_name,'-',b.box_row,'-',b.box_column,'-',b.box_id) as address,a.id
+        from doc_info a
+        left join doc_box b on a.box_id = b.box_id
+        left join doc_shelves c on b.shelves_no = c.shelves_no
+        left join sys_user d on a.update_by = d.user_id
+        <where>
+            a.shelves_status = '1'
+            <if test="shelvesType != null  and shelvesType != ''">and c.shelves_type = #{shelvesType}</if>
+            <if test="startDate != null  and startDate != ''"> and a.update_time &gt;= #{startDate}</if>
+            <if test="endDate != null  and endDate != ''"> and a.update_time &lt;= #{endDate}</if>
+            <if test="id != null  and id != ''"> and (c.coffers_no = #{id} or c.id = #{id})</if>
+        </where>
+    </select>
+
+    <select id="shelvesDownList" parameterType="DocInfo" resultMap="DocInfoResult">
+        select '下架' as shelvesStatus,d.nick_name as update_by , a.update_time,a.ori_doc_id,a.title,CONCAT(b.coffers_no,'-',c.shelves_name,'-',b.box_row,'-',b.box_column,'-',b.box_id) as address,a.id
+        from doc_info a
+        left join doc_box b on a.box_id = b.box_id
+        left join doc_shelves c on b.shelves_no = c.shelves_no
+        left join sys_user d on a.update_by = d.user_id
+        <where>
+            a.shelves_status = '2'
+            <if test="shelvesType != null  and shelvesType != ''">and c.shelves_type = #{shelvesType}</if>
+            <if test="startDate != null  and startDate != ''"> and a.update_time &gt;= #{startDate}</if>
+            <if test="endDate != null  and endDate != ''"> and a.update_time &lt;= #{endDate}</if>
+            <if test="id != null  and id != ''"> and (c.coffers_no = #{id} or c.id = #{id})</if>
+        </where>
+    </select>
+
+    <select id="shelvesDownStopList" parameterType="DocInfo" resultMap="DocInfoResult">
+        select '待下架' as shelvesStatus,b.box_name,a.ori_doc_id,a.title,a.id from doc_info a
+        left join doc_box b on a.box_id = b.box_id
+        <where>
+            a.shelves_status  = '1'
+            <if test="title != null  and title != ''">and a.title like concat('%', #{title}, '%')</if>
+            <if test="oriDocId != null  and oriDocId != ''">and a.ori_doc_id like concat('%', #{oriDocId}, '%')</if>
+        </where>
+    </select>
+
+    <insert id="insertDocInfo" parameterType="DocInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into doc_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="category != null">category,</if>
+            <if test="docType != null">doc_type,</if>
+            <if test="oriDocId != null">ori_doc_id,</if>
+            <if test="recieveDept != null">recieve_dept,</if>
+            <if test="title != null">title,</if>
+            <if test="secretLevel != null">secret_level,</if>
+            <if test="orgCode != null">org_code,</if>
+            <if test="openAudit != null">open_audit,</if>
+            <if test="writeDate != null">write_date,</if>
+            <if test="assosiatePersons != null">assosiate_persons,</if>
+            <if test="docContentId != null">doc_content_id,</if>
+            <if test="specsubiName != null">specsubi_name,</if>
+            <if test="keywords != null">keywords,</if>
+            <if test="recoder != null">recoder,</if>
+            <if test="recordPlace != null">record_place,</if>
+            <if test="recordDate != null">record_date,</if>
+            <if test="duration != null">duration,</if>
+            <if test="format != null">format,</if>
+            <if test="objFrom != null">obj_from,</if>
+            <if test="resposible != null">resposible,</if>
+            <if test="content != null">content,</if>
+            <if test="hasFile != null">has_file,</if>
+            <if test="pageCnt != null">page_cnt,</if>
+            <if test="status != null">status,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="archiveStatus != null">archive_status,</if>
+            <if test="attachments != null">attachments,</if>
+            <if test="destroyReason != null">destroy_reason,</if>
+            <if test="remainingDays != null">remaining_days,</if>
+            <if test="turnTime != null ">  turn_time ,</if>
+            <if test="recipient != null ">  recipient, </if>
+            <if test="operator != null ">  operator, </if>
+            <if test="bringTime != null ">  bring_time ,</if>
+            <if test="checker != null ">  checker, </if>
+            <if test="checkTime != null ">  check_time, </if>
+            <if test="destroyTime != null ">  destroy_time, </if>
+            <if test="turnStatus != null ">  turn_status, </if>
+            <if test="destroyStatus != null ">  destroy_status, </if>
+            <if test="deptName != null ">  dept_name, </if>
+            <if test="companyName != null ">  company_name, </if>
+            <if test="companyId != null ">  company_id, </if>
+            <if test="secretName != null ">  secret_name, </if>
+            <if test="categoryName != null ">  category_name, </if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="category != null">#{category},</if>
+            <if test="docType != null">#{docType},</if>
+            <if test="oriDocId != null">#{oriDocId},</if>
+            <if test="recieveDept != null">#{recieveDept},</if>
+            <if test="title != null">#{title},</if>
+            <if test="secretLevel != null">#{secretLevel},</if>
+            <if test="orgCode != null">#{orgCode},</if>
+            <if test="openAudit != null">#{openAudit},</if>
+            <if test="writeDate != null">#{writeDate},</if>
+            <if test="assosiatePersons != null">#{assosiatePersons},</if>
+            <if test="docContentId != null">#{docContentId},</if>
+            <if test="specsubiName != null">#{specsubiName},</if>
+            <if test="keywords != null">#{keywords},</if>
+            <if test="recoder != null">#{recoder},</if>
+            <if test="recordPlace != null">#{recordPlace},</if>
+            <if test="recordDate != null">#{recordDate},</if>
+            <if test="duration != null">#{duration},</if>
+            <if test="format != null">#{format},</if>
+            <if test="objFrom != null">#{objFrom},</if>
+            <if test="resposible != null">#{resposible},</if>
+            <if test="content != null">#{content},</if>
+            <if test="hasFile != null">#{hasFile},</if>
+            <if test="pageCnt != null">#{pageCnt},</if>
+            <if test="status != null">#{status},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="archiveStatus != null">#{archiveStatus},</if>
+            <if test="attachments != null">#{attachments},</if>
+            <if test="destroyReason != null">#{destroyReason},</if>
+            <if test="remainingDays != null">#{remainingDays},</if>
+            <if test="turnTime != null "> #{turnTime},</if>
+            <if test="recipient != null "> #{recipient},</if>
+            <if test="operator != null "> #{operator},</if>
+            <if test="bringTime != null "> #{bringTime},</if>
+            <if test="checker != null "> #{checker},</if>
+            <if test="checkTime != null "> #{checkTime,}</if>
+            <if test="destroyTime != null "> #{destroyTime},</if>
+            <if test="turnStatus != null "> #{turnStatus},</if>
+            <if test="destroyStatus != null ">#{destroyStatus},</if>
+            <if test="deptName != null ">  #{deptName}, </if>
+            <if test="companyName != null ">  #{companyName}, </if>
+            <if test="companyId != null ">  #{companyId}, </if>
+            <if test="secretName != null ">  #{secretName}, </if>
+            <if test="categoryName != null ">  #{categoryName}, </if>
+         </trim>
+    </insert>
+
+    <insert id="insertDocBehavior">
+      insert into doc_behavior
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="docTitle != null">doc_title,</if>
+        <if test="username != null">username,</if>
+        <if test="nickName != null">nick_name,</if>
+        <if test="behavior != null">behavior,</if>
+        <if test="deptName != null">doc_dept_name,</if>
+        <if test="companyName != null">doc_company_name,</if>
+        <if test="behaviorTime != null">behavior_time,</if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="docTitle != null and docTitle != ''">#{docTitle},</if>
+        <if test="username != null and username != ''">#{username},</if>
+        <if test="nickName != null and nickName != ''">#{nickName},</if>
+        <if test="behavior != null and behavior != ''">#{behavior},</if>
+        <if test="deptName != null and deptName != ''">#{deptName},</if>
+        <if test="companyName != null and companyName != ''">#{companyName},</if>
+        <if test="behaviorTime != null and behaviorTime != ''">#{behaviorTime},</if>
+      </trim>
+    </insert>
+
+    <sql id="selectDocBehaviorVo">
+        select id, doc_title docTitle, username username, nick_name nickName,
+          behavior behavior, doc_dept_name deptName, doc_company_name companyName,
+          behavior_time behaviorTime
+        from doc_behavior
+    </sql>
+
+    <select id="queryDocBehaviorList" resultType="com.aspi.docmanage.domain.DocBehavior">
+      <include refid="selectDocBehaviorVo"/>
+      <where>
+        <if test="docTitle != null and docTitle != ''"> and doc_title = #{docTitle}</if>
+        <if test="username != null and username != ''"> and username = #{username}</if>
+        <if test="behavior != null and behavior != ''"> and behavior = #{behavior}</if>
+        <if test="behaviorTime != null and behaviorTime != ''"> and behavior_time = #{behaviorTime}</if>
+      </where>
+    </select>
+
+    <update id="updateDocInfo" parameterType="DocInfo">
+        update doc_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="category != null">category = #{category},</if>
+            <if test="docType != null">doc_type = #{docType},</if>
+            <if test="oriDocId != null">ori_doc_id = #{oriDocId},</if>
+            <if test="recieveDept != null">recieve_dept = #{recieveDept},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="secretLevel != null">secret_level = #{secretLevel},</if>
+            <if test="orgCode != null">org_code = #{orgCode},</if>
+            <if test="openAudit != null">open_audit = #{openAudit},</if>
+            <if test="writeDate != null">write_date = #{writeDate},</if>
+            <if test="assosiatePersons != null">assosiate_persons = #{assosiatePersons},</if>
+            <if test="docContentId != null">doc_content_id = #{docContentId},</if>
+            <if test="specsubiName != null">specsubi_name = #{specsubiName},</if>
+            <if test="keywords != null">keywords = #{keywords},</if>
+            <if test="recoder != null">recoder = #{recoder},</if>
+            <if test="recordPlace != null">record_place = #{recordPlace},</if>
+            <if test="recordDate != null">record_date = #{recordDate},</if>
+            <if test="duration != null">duration = #{duration},</if>
+            <if test="format != null">format = #{format},</if>
+            <if test="objFrom != null">obj_from = #{objFrom},</if>
+            <if test="resposible != null">resposible = #{resposible},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="hasFile != null">has_file = #{hasFile},</if>
+            <if test="pageCnt != null">page_cnt = #{pageCnt},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="attachments != null">attachments = #{attachments},</if>
+            <if test="destroyReason != null">destroy_reason = #{destroyReason},</if>
+            <if test="remainingDays != null">remaining_days = #{remainingDays},</if>
+            <if test="turnTime != null ">turn_time = #{turnTime},</if>
+            <if test="recipient != null ">recipient = #{recipient},</if>
+            <if test="operator != null ">operator = #{operator},</if>
+            <if test="bringTime != null ">bring_time = #{bringTime},</if>
+            <if test="checker != null ">checker = #{checker},</if>
+            <if test="checkTime != null ">check_time = #{checkTime},</if>
+            <if test="destroyTime != null ">destroy_time = #{destroyTime},</if>
+            <if test="turnStatus != null ">turn_status = #{turnStatus},</if>
+            <if test="destroyStatus != null ">destroy_status = #{destroyStatus},</if>
+            <if test="explains != null ">explains = #{explains},</if>
+            <if test="deptName != null ">dept_name = #{deptName}, </if>
+            <if test="companyName != null ">company_name = #{companyName}, </if>
+            <if test="companyId != null ">company_id = #{companyId}, </if>
+            <if test="secretName != null ">secret_name = #{secretName}, </if>
+            <if test="categoryName != null ">category_name = #{categoryName}, </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDocInfoById" parameterType="Long">
+        update doc_info set del_flag = '1' where id = #{id}
+    </delete>
+    <delete id="deleteDocInfoByIds" parameterType="String">
+        update doc_info set del_flag = '1' where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="recycleRemoveByIds" parameterType="String">
+        delete from doc_info  where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <update id="delShelvesInfo" parameterType="DocInfo">
+        update doc_info set box_id = '',shelves_status = '2'
+        where box_id = #{boxId}
+    </update>
+    <update id="shelvesUp" parameterType="DocInfo">
+        update doc_info set
+                            box_id = #{boxId},
+                            update_time = #{createTime},
+                            update_by = #{createBy},
+                            shelves_status = '1'
+        where id = #{id}
+    </update>
+    <update id="shelvesDown" parameterType="DocInfo">
+        update doc_info set
+                            box_id = '',
+                            update_time = #{createTime},
+                            update_by = #{createBy},
+                            shelves_status = '2'
+        where id = #{id}
+    </update>
+    <update id="updateArchiveStatus" parameterType="DocInfo">
+        update doc_info set
+            <if test="reason != null and reason != ''">
+              reason = #{reason},
+            </if>
+            <if test="refuseReason != null and refuseReason != ''">
+              refuse_reason = #{refuseReason},
+            </if>
+            archive_status = #{archiveStatus}
+        where id = #{id}
+    </update>
+    <update id="updateDocInfoStatus" parameterType="DocInfo">
+        update doc_info set
+            status = #{status},
+            destroy_reason = #{destroyReason}
+        where id = #{id}
+    </update>
+    <update id="updateRemainingDays" parameterType="DocInfo">
+        update doc_info set
+            remaining_days = #{remainingDays}
+        where id = #{id}
+    </update>
+    <update id="updateStatus" parameterType="DocInfo">
+        update doc_info set
+                            status = #{status},
+                            reasons = #{reasons},
+                            secret_level = #{secretLevel}
+        where id = #{id}
+    </update>
+    <update id="updateStatusByBack" parameterType="DocInfo">
+        update doc_info set
+                            status = #{status},
+                            reasons = #{reasons}
+        where id = #{id}
+    </update>
+    <update id="updateStatusPass" parameterType="DocInfo">
+        update doc_info set
+                status = #{status},
+                reasons = #{reasons}
+        where id = #{id}
+    </update>
+    <update id="updateDocInfoStatusFull" parameterType="DocInfo">
+        update doc_info set
+                status = #{status},
+                reasons = #{reasons}
+        where id = #{id}
+    </update>
+    <update id="updateDocInfoRestore">
+        update doc_info set del_flag = '0' where id in
+        <foreach item="ids" collection="array" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </update>
+    <select id="selId" parameterType="DocInfo" resultType="String" >
+        select box_id from doc_box where shelves_no = #{shelvesNo} and box_name = #{boxName}
+    </select>
+<!--    <select id="queryByDocTypeId" resultType="com.aspi.docmanage.domain.DocInfo">-->
+<!--        select * from doc_info where  doc_type = #{docType} and del_flag = '0' and archive_status = '0'-->
+<!--    </select>-->
+<!--    <select id="selectAllData" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        <include refid="selectDocInfoVo"/>-->
+<!--        where archive_status = '0' and del_flag = '0'-->
+<!--    </select>-->
+    <select id="selectDocManageAllData" resultMap="DocInfoResult">
+        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level,box_id, org_code, open_audit, write_date,
+        assosiate_persons, doc_content_id, specsubi_name, keywords, recoder, record_place, record_date, duration, format,
+        obj_from, resposible, content, has_file, page_cnt, status, dept_id, del_flag, create_by,create_time, update_by,
+        update_time, remark, archive_status, attachments
+        from doc_info a
+        where archive_status = #{archiveStatus} and del_flag = '0'
+        <if test="categoryId != null">
+          and a.category = #{categoryId}
+        </if>
+        <if test="(roleId == 2 or roleId == 3 or roleId == 4) and companyId != null">
+          and a.company_id = #{companyId}
+        </if>
+        <if test="(roleId == 2 or roleId == 3) and deptId != null">
+          and a.dept_id = #{deptId}
+        </if>
+        <if test="type != null "> and not exists (select 1 from doc_borrow_archive b where a.id = b.doc_info_id)</if>
+    </select>
+
+<!--    <select id="queryByText" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               write_date, assosiate_persons, doc_content_id, specsubi_name, keywords, has_file, page_cnt,-->
+<!--               status, dept_id, del_flag, remark,attachments-->
+<!--        from doc_info where category = #{categoryId} and doc_type = #{docType} and del_flag = '0' and archive_status = '0'-->
+<!--    </select>-->
+
+<!--    <select id="queryByPhoto" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               assosiate_persons, specsubi_name ,keywords,page_cnt,has_file,recoder,record_date,record_place,attachments-->
+<!--        from doc_info where category = #{categoryId} and doc_type = #{docType} and del_flag = '0' and archive_status = '0'-->
+<!--    </select>-->
+
+<!--    <select id="queryByRecord" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               assosiate_persons, specsubi_name ,keywords,has_file,recoder,record_date,record_place,content,duration,format,attachments-->
+<!--        from doc_info where category = #{categoryId} and doc_type = #{docType} and del_flag = '0' and archive_status = '0'-->
+
+<!--    </select>-->
+
+<!--    <select id="queryByMatter" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title,write_date ,org_code,open_audit,-->
+<!--               assosiate_persons,has_file,page_cnt,keywords,obj_from,attachments-->
+<!--        from doc_info where category = #{categoryId} and doc_type = #{docType} and del_flag = '0' and archive_status ='0'-->
+<!--    </select>-->
+
+<!--    <select id="queryByText1" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               write_date, assosiate_persons, doc_content_id, specsubi_name, keywords, has_file, page_cnt,-->
+<!--               status, dept_id, del_flag, remark,attachments-->
+<!--        from doc_info-->
+<!--        where category = #{categoryId}  and del_flag = '0' and archive_status = '0'-->
+
+<!--    </select>-->
+
+<!--    <select id="queryByPhoto1" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               assosiate_persons, specsubi_name ,keywords,page_cnt,has_file,recoder,record_date,record_place,attachments-->
+<!--        from doc_info where category = #{categoryId}  and del_flag = '0' and archive_status = '0'-->
+<!--    </select>-->
+
+<!--    <select id="queryByRecord1" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               assosiate_persons, specsubi_name ,keywords,has_file,recoder,record_date,record_place,content,duration,format,attachments-->
+<!--        from doc_info where category = #{categoryId}  and del_flag = '0' and archive_status = '0'-->
+<!--    </select>-->
+
+<!--    <select id="queryByMatter1" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title,write_date ,org_code,open_audit,-->
+<!--               assosiate_persons,has_file,page_cnt,keywords,obj_from,attachments-->
+<!--        from doc_info where category = #{categoryId}  and del_flag = '0' and archive_status = '0'-->
+<!--    </select>-->
+
+<!--    <select id="selectDocInfoListArchive" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        <include refid="selectDocInfoVo"/>-->
+<!--            where archive_status = '2'-->
+<!--    </select>-->
+<!--    <select id="queryDocManageByText" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               write_date, assosiate_persons, doc_content_id, specsubi_name, keywords, has_file, page_cnt,-->
+<!--               status, dept_id, del_flag, remark,attachments-->
+<!--        from doc_info where category = #{categoryId} and doc_type = #{docType} and del_flag = '0' and archive_status = '2'-->
+<!--    </select>-->
+<!--    <select id="queryDocManageByPhoto" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               assosiate_persons, specsubi_name ,keywords,page_cnt,has_file,recoder,record_date,record_place,attachments-->
+<!--        from doc_info where category = #{categoryId} and doc_type = #{docType} and del_flag = '0' and archive_status = '2'-->
+<!--    </select>-->
+<!--    <select id="queryDocManageByRecord" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               assosiate_persons, specsubi_name ,keywords,has_file,recoder,record_date,record_place,content,duration,format,attachments-->
+<!--        from doc_info where category = #{categoryId} and doc_type = #{docType} and del_flag = '0' and archive_status = '2'-->
+<!--    </select>-->
+<!--    <select id="queryDocManageByMatter" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title,write_date ,org_code,open_audit,-->
+<!--               assosiate_persons,has_file,page_cnt,keywords,obj_from,attachments-->
+<!--        from doc_info where category = #{categoryId} and doc_type = #{docType} and del_flag = '0' and archive_status ='1'-->
+<!--    </select>-->
+
+<!--    <select id="queryDocManageByText1" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               write_date, assosiate_persons, doc_content_id, specsubi_name, keywords, has_file, page_cnt,-->
+<!--               status, dept_id, del_flag, remark,attachments-->
+<!--        from doc_info a-->
+<!--        where category = #{categoryId}  and del_flag = '0' and archive_status = '2'-->
+<!--        <if test="type != null "> and not exists (select 1 from doc_borrow_archive b where a.id = b.doc_info_id)</if>-->
+<!--    </select>-->
+
+<!--    <select id="queryDocManageByPhoto1" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               assosiate_persons, specsubi_name ,keywords,page_cnt,has_file,recoder,record_date,record_place,attachments-->
+<!--        from doc_info a where category = #{categoryId}  and del_flag = '0' and archive_status = '2'-->
+<!--        <if test="type != null "> and not exists (select 1 from doc_borrow_archive b where a.id = b.doc_info_id)</if>-->
+<!--    </select>-->
+
+<!--    <select id="queryDocManageByRecord1" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit,-->
+<!--               assosiate_persons, specsubi_name ,keywords,has_file,recoder,record_date,record_place,content,duration,format,attachments-->
+<!--        from doc_info a where category = #{categoryId}  and del_flag = '0' and archive_status = '2'-->
+<!--        <if test="type != null "> and not exists (select 1 from doc_borrow_archive b where a.id = b.doc_info_id)</if>-->
+<!--    </select>-->
+
+<!--    <select id="queryDocManageByMatter1" parameterType="DocInfo" resultMap="DocInfoResult">-->
+<!--        select id, category, doc_type, ori_doc_id, recieve_dept, title,write_date ,org_code,open_audit,-->
+<!--               assosiate_persons,has_file,page_cnt,keywords,obj_from,attachments-->
+<!--        from doc_info a where category = #{categoryId}  and del_flag = '0' and archive_status = '2'-->
+<!--        <if test="type != null "> and not exists (select 1 from doc_borrow_archive b where a.id = b.doc_info_id)</if>-->
+<!--    </select>-->
+
+<!--    <select id="queryDocManageByDocTypeId" resultType="com.aspi.docmanage.domain.DocInfo">-->
+<!--        select * from doc_info where  doc_type = #{docType} and del_flag = '0' and archive_status = '2'-->
+<!--    </select>-->
+    <select id="listWait" parameterType="DocInfo" resultMap="DocInfoResult">
+    <include refid="selectDocInfoVo"/>
+    where archive_status = '1'
+  </select>
+    <select id="selectDocInfoIds" resultType="com.aspi.docmanage.domain.DocInfo">
+        select *  from doc_info where id in
+        <foreach item="docId" collection="array" open="(" separator="," close=")">
+            #{docId}
+        </foreach>
+        and archive_status = '2'
+    </select>
+    <select id="authenticateExpire" parameterType="DocInfo" resultMap="DocInfoResult">
+        <include refid="selectDocInfoVo"/>
+        <where>
+            <if test="category != null "> and category = #{category}</if>
+            <if test="docType != null "> and doc_type = #{docType}</if>
+            <if test="oriDocId != null  and oriDocId != ''"> and ori_doc_id = #{oriDocId}</if>
+            <if test="recieveDept != null  and recieveDept != ''"> and recieve_dept = #{recieveDept}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="secretLevel != null "> and secret_level = #{secretLevel}</if>
+            <if test="orgCode != null  and orgCode != ''"> and org_code = #{orgCode}</if>
+            <if test="openAudit != null "> and open_audit = #{openAudit}</if>
+            <if test="writeDate != null "> and write_date = #{writeDate}</if>
+            <if test="assosiatePersons != null  and assosiatePersons != ''"> and assosiate_persons = #{assosiatePersons}</if>
+            <if test="docContentId != null  and docContentId != ''"> and doc_content_id = #{docContentId}</if>
+            <if test="specsubiName != null  and specsubiName != ''"> and specsubi_name like concat('%', #{specsubiName}, '%')</if>
+            <if test="keywords != null  and keywords != ''"> and keywords = #{keywords}</if>
+            <if test="recoder != null  and recoder != ''"> and recoder = #{recoder}</if>
+            <if test="recordPlace != null  and recordPlace != ''"> and record_place = #{recordPlace}</if>
+            <if test="recordDate != null "> and record_date = #{recordDate}</if>
+            <if test="duration != null "> and duration = #{duration}</if>
+            <if test="format != null  and format != ''"> and format = #{format}</if>
+            <if test="objFrom != null  and objFrom != ''"> and obj_from = #{objFrom}</if>
+            <if test="resposible != null  and resposible != ''"> and resposible = #{resposible}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="hasFile != null "> and has_file = #{hasFile}</if>
+            <if test="pageCnt != null "> and page_cnt = #{pageCnt}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="boxId != null "> and box_id = #{boxId}</if>
+            <if test="archiveStatus != null "> and archive_status = #{archiveStatus}</if>
+            <if test="destroyReason != null "> and destroy_reason = #{destroyReason}</if>
+            <if test="remainingDays != null "> and remaining_days = #{remainingDays}</if>
+            <if test="turnTime != null "> and turn_time = #{turnTime}</if>
+            <if test="recipient != null "> and recipient = #{recipient}</if>
+            <if test="operator != null "> and operator = #{operator}</if>
+            <if test="bringTime != null "> and bring_time = #{bringTime}</if>
+            <if test="checker != null "> and checker = #{checker}</if>
+            <if test="checkTime != null "> and check_time = #{checkTime}</if>
+            <if test="destroyTime != null "> and destroy_time = #{destroyTime}</if>
+            <if test="turnStatus != null "> and turn_status = #{turnStatus}</if>
+            <if test="destroyStatus != null "> and destroy_status = #{destroyStatus}</if>
+            <if test="explains != null "> and explains = #{explains}</if>
+            <if test="deptName != null "> and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="companyName != null "> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="companyId != null "> and company_id = #{companyId}</if>
+            <if test="secretName != null "> and secret_name = #{secretName}</if>
+            <if test="categoryName != null "> and category_name = #{categoryName}</if>
+        </where>
+    </select>
+    <select id="selectDocInfoListAll" parameterType="DocInfo" resultMap="DocInfoResult">
+        <include refid="selectDocInfoVo"/>
+    </select>
+    <select id="selectDocInfoListTotal" parameterType="DocInfo" resultMap="DocInfoResult">
+        <include refid="selectDocInfoVo"/>
+    </select>
+    <select id="myTask" parameterType="AttachmentApproval" resultType="AttachmentApproval">
+      SELECT
+        aa.id,
+        aa.user_id userId,
+        aa.attachment_id attachmentId,
+        aa.dept_id deptId,
+        aa.start_time startTime,
+        aa.handle_time handleTime,
+        aa.remark remark,
+        aa.refuse_reason refuseReason,
+        aa.can_status canStatus,
+        u.user_name userName,
+        f.NAME attachmentName,
+        i.title docName,
+        d.dept_name deptName,
+        c.company_name companyName,
+        f.type type
+      FROM doc_attachment_approval aa
+        left join sys_user u ON aa.user_id = u.user_id
+        left join sys_up_file f ON aa.attachment_id = f.id
+        left join doc_attachments s on s.attachments = aa.attachment_id
+        left join doc_info i on i.id = s.doc_id
+        left join doc_dept d on d.dept_id = u.dept_id
+        left join doc_company c on c.company_id = u.company_id
+      WHERE 1 = 1
+        and aa.dept_id = #{deptId}
+        and aa.can_status != 3 and aa.can_status != 4
+    </select>
+    <select id="myRequest" parameterType="AttachmentApproval" resultType="AttachmentApproval">
+      SELECT
+        aa.id,
+        aa.user_id userId,
+        aa.attachment_id attachmentId,
+        aa.dept_id deptId,
+        aa.start_time startTime,
+        aa.handle_time handleTime,
+        aa.remark remark,
+        aa.refuse_reason refuseReason,
+        aa.can_status canStatus,
+        u.user_name userName,
+        f.NAME attachmentName,
+        i.title docName,
+        d.dept_name deptName,
+        c.company_name companyName,
+        f.type type
+      FROM doc_attachment_approval aa
+        left join sys_user u ON aa.user_id = u.user_id
+        left join sys_up_file f ON aa.attachment_id = f.id
+        left join doc_attachments s on s.attachments = aa.attachment_id
+        left join doc_info i on i.id = s.doc_id
+        left join doc_dept d on d.dept_id = u.dept_id
+        left join doc_company c on c.company_id = u.company_id
+      WHERE 1 = 1
+        <if test="canStatus != null">
+          AND aa.can_status = #{canStatus}
+        </if>
+        and aa.user_id = #{userId} and aa.dept_id = #{deptId}
+        and aa.can_status != 3 and aa.can_status != 4
+  </select>
+    <select id="queryWaitList" resultType="AttachmentApproval">
+      select id id, handle_time handleTime, can_status canStatus
+      from doc_attachment_approval where can_status = 1;
+    </select>
+    <select id="beforeApprovalResult">
+      select count(*) from doc_attachment_approval
+        where user_id = #{userId}
+        and attachment_id = #{attachmentId}
+    </select>
+    <select id="checkAlready">
+      select count(*) from doc_attachment_approval
+        where user_id = #{userId} and can_status = 0
+        and attachment_id = #{attachmentId}
+    </select>
+    <select id="approvalResult">
+      select count(*) from doc_attachment_approval
+        where user_id = #{userId} and can_status = 1
+        and attachment_id = #{attachmentId}
+    </select>
+    <select id="selectDocOriId" resultType="com.aspi.docmanage.domain.DocInfo">
+        select * from doc_info where ori_doc_id = #{oriDocId}
+    </select>
+    <insert id="addApprovalResult">
+    insert into doc_attachment_approval
+<!--    <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--      <if test="id != null">id,</if>-->
+<!--      <if test="userId != null">user_id,</if>-->
+<!--      <if test="attachmentId != null">attachment_id,</if>-->
+<!--      <if test="deptId != null">dept_id,</if>-->
+<!--      <if test="startTime != null">start_time,</if>-->
+<!--      <if test="handleTime != null">handle_time,</if>-->
+<!--      <if test="remark != null">remark,</if>-->
+<!--      <if test="canStatus != null">can_status,</if>-->
+<!--    </trim>-->
+        (id, user_id, attachment_id, dept_id, start_time, handle_time, remark, refuse_reason, can_status)
+        values
+        (#{id}, #{userId}, #{attachmentId}, #{deptId}, #{startTime}, #{handleTime}, #{remark}, #{refuseReason}, #{canStatus})
+<!--    <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--      <if test="id != null">#{id},</if>-->
+<!--      <if test="userId != null">#{userId},</if>-->
+<!--      <if test="attachmentId != null and attachmentId != ''">#{attachmentId},</if>-->
+<!--      <if test="deptId != null and deptId != ''">#{deptId},</if>-->
+<!--      <if test="startTime != null and startTime != ''">#{startTime},</if>-->
+<!--      <if test="handleTime != null and handleTime != ''">#{handleTime},</if>-->
+<!--      <if test="remark != null and remark != ''">#{remark},</if>-->
+<!--      <if test="canStatus != null and canStatus != ''">#{canStatus},</if>-->
+<!--    </trim>-->
+  </insert>
+    <update id="updateApprovalResult" parameterType="AttachmentApproval">
+      update doc_attachment_approval
+        set can_status = #{canStatus},
+        <if test="refuseReason != null and refuseReason != ''">
+          refuse_reason = #{refuseReason},
+        </if>
+        handle_time = #{handleTime}
+        where user_id = #{userId} and dept_id = #{deptId} and attachment_id in
+        <foreach collection="attachmentIds" item="attId" open="(" separator="," close=")">
+          #{attId}
+        </foreach>
+    </update>
+    <update id="expireApprovalResult" parameterType="AttachmentApproval">
+    update doc_attachment_approval
+      set can_status = 3
+      where id in
+      <foreach collection="ids" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+  </update>
+</mapper>

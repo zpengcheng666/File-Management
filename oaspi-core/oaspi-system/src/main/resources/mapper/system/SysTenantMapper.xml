@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oaspi.system.mapper.SysTenantMapper">
+    
+    <resultMap type="SysTenant" id="SysTenantResult">
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="status"    column="status"    />
+        <result property="name"    column="name"    />
+        <result property="contactUser"    column="contact_user"    />
+        <result property="phone"    column="phone"    />
+        <result property="address"    column="address"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+
+  <association property="bizCreateBy" column="create_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizUpdateBy" column="update_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+
+
+
+
+
+
+
+
+
+
+
+
+    </resultMap>
+
+    <sql id="selectSysTenantVo">
+        select tenant_id, status, name, contact_user, phone, address, del_flag, create_by, create_time, update_by, update_time, remark from sys_tenant
+    </sql>
+    <select id="selectSysTenantList" parameterType="SysTenant" resultMap="SysTenantResult">
+        <include refid="selectSysTenantVo"/>
+        <where>  
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="contactUser != null  and contactUser != ''"> and contact_user = #{contactUser}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+    <select id="selectSysTenantByTenantId" parameterType="Long" resultMap="SysTenantResult">
+        <include refid="selectSysTenantVo"/>
+        where tenant_id = #{tenantId}
+    </select>
+
+    <insert id="insertSysTenant" parameterType="SysTenant" useGeneratedKeys="true" keyProperty="tenantId">
+        insert into sys_tenant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="status != null">status,</if>
+            <if test="name != null">name,</if>
+            <if test="contactUser != null">contact_user,</if>
+            <if test="phone != null">phone,</if>
+            <if test="address != null">address,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="status != null">#{status},</if>
+            <if test="name != null">#{name},</if>
+            <if test="contactUser != null">#{contactUser},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="address != null">#{address},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysTenant" parameterType="SysTenant">
+        update sys_tenant
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="status != null">status = #{status},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="contactUser != null">contact_user = #{contactUser},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where tenant_id = #{tenantId}
+    </update>
+
+    <delete id="deleteSysTenantByTenantId" parameterType="Long">
+        delete from sys_tenant where tenant_id = #{tenantId}
+    </delete>
+
+    <delete id="deleteSysTenantByTenantIds" parameterType="String">
+        delete from sys_tenant where tenant_id in 
+        <foreach item="tenantId" collection="array" open="(" separator="," close=")">
+            #{tenantId}
+        </foreach>
+    </delete>
+</mapper>

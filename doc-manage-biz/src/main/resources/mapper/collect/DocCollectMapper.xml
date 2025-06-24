@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocCollectMapper">
+    
+    <resultMap type="DocCollect" id="DocCollectResult">
+        <result property="collectId"    column="collect_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="docInfoId"    column="doc_info_id"    />
+
+    <association property="docInfoIdMap" column="doc_info_id"
+         select="refSelectSysUserList"
+         javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizCreateBy" column="create_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizUpdateBy" column="update_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+
+
+
+
+
+
+
+    </resultMap>
+
+<sql id="refSelectSysUserVo22">
+    select user_id, dept_id, user_name, nick_name, user_type, email, phonenumber, sex, avatar, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time, remark from sys_user
+</sql>
+ <resultMap type="SysUser" id="SysUserResult22">
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="userType"    column="user_type"    />
+        <result property="email"    column="email"    />
+        <result property="phonenumber"    column="phonenumber"    />
+        <result property="sex"    column="sex"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="password"    column="password"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="loginIp"    column="login_ip"    />
+        <result property="loginDate"    column="login_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+</resultMap>
+<select id="refSelectSysUserList22" parameterType="SysUser"
+ resultMap="SysUserResult22">
+        <include refid="refSelectSysUserVo22"/>
+        <where>
+        user_id = #{doc_info_id}
+        </where>
+Limit 1
+ </select>
+    <sql id="selectDocCollectVo">
+        select collect_id, del_flag, create_by, create_time, update_by, update_time, doc_info_id from doc_collect
+    </sql>
+    <select id="selectDocCollectList" parameterType="DocCollect" resultMap="DocCollectResult">
+        <include refid="selectDocCollectVo"/>
+        <where>  
+            <if test="docInfoId != null "> and doc_info_id = #{docInfoId}</if>
+        </where>
+    </select>
+    <select id="selectDocCollectByCollectId" parameterType="Long" resultMap="DocCollectResult">
+        <include refid="selectDocCollectVo"/>
+        where collect_id = #{collectId}
+    </select>
+
+    <insert id="insertDocCollect" parameterType="DocCollect" useGeneratedKeys="true" keyProperty="collectId">
+        insert into doc_collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="docInfoId != null">doc_info_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="docInfoId != null">#{docInfoId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDocCollect" parameterType="DocCollect">
+        update doc_collect
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="docInfoId != null">doc_info_id = #{docInfoId},</if>
+        </trim>
+        where collect_id = #{collectId}
+    </update>
+
+    <delete id="deleteDocCollectByCollectId" parameterType="Long">
+        delete from doc_collect where collect_id = #{collectId}
+    </delete>
+
+    <delete id="deleteDocCollectByCollectIds" parameterType="String">
+        delete from doc_collect where collect_id in 
+        <foreach item="collectId" collection="array" open="(" separator="," close=")">
+            #{collectId}
+        </foreach>
+    </delete>
+</mapper>

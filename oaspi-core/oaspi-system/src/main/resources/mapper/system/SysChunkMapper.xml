@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oaspi.system.mapper.SysChunkMapper">
+
+    <resultMap type="SysChunk" id="SysChunkResult">
+        <result property="chunkId"    column="chunk_id"    />
+        <result property="chunkNumber"    column="chunk_number"    />
+        <result property="chunkSize"    column="chunk_size"    />
+        <result property="currentChunkSize"    column="current_chunk_size"    />
+        <result property="filename"    column="file_name"    />
+        <result property="identifier"    column="identifier"    />
+        <result property="relativePath"    column="relative_path"    />
+        <result property="totalChunks"    column="total_chunks"    />
+        <result property="totalSize"    column="total_size"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectSysChunkVo">
+        select chunk_id, chunk_number, chunk_size, current_chunk_size, file_name, identifier, relative_path, total_chunks, total_size, create_by, create_time, update_by, update_time, del_flag from sys_chunk
+    </sql>
+
+    <select id="selectSysChunkList" parameterType="SysChunk" resultMap="SysChunkResult">
+        <include refid="selectSysChunkVo"/>
+        <where>
+            <if test="chunkNumber != null "> and chunk_number = #{chunkNumber}</if>
+            <if test="chunkSize != null "> and chunk_size = #{chunkSize}</if>
+            <if test="currentChunkSize != null "> and current_chunk_size = #{currentChunkSize}</if>
+            <if test="filename != null  and filename != ''"> and file_name like concat('%', #{filename}, '%')</if>
+            <if test="identifier != null  and identifier != ''"> and identifier = #{identifier}</if>
+            <if test="relativePath != null  and relativePath != ''"> and relative_path = #{relativePath}</if>
+            <if test="totalChunks != null "> and total_chunks = #{totalChunks}</if>
+            <if test="totalSize != null "> and total_size = #{totalSize}</if>
+        </where>
+    </select>
+
+    <select id="selectSysChunkById" parameterType="Long" resultMap="SysChunkResult">
+        <include refid="selectSysChunkVo"/>
+        where chunk_id = #{chunkId}
+    </select>
+
+    <insert id="insertSysChunk" parameterType="SysChunk" useGeneratedKeys="true" keyProperty="chunkId">
+        insert into sys_chunk
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="chunkNumber != null">chunk_number,</if>
+            <if test="chunkSize != null">chunk_size,</if>
+            <if test="currentChunkSize != null">current_chunk_size,</if>
+            <if test="filename != null">file_name,</if>
+            <if test="identifier != null">identifier,</if>
+            <if test="relativePath != null">relative_path,</if>
+            <if test="totalChunks != null">total_chunks,</if>
+            <if test="totalSize != null">total_size,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="chunkNumber != null">#{chunkNumber},</if>
+            <if test="chunkSize != null">#{chunkSize},</if>
+            <if test="currentChunkSize != null">#{currentChunkSize},</if>
+            <if test="filename != null">#{filename},</if>
+            <if test="identifier != null">#{identifier},</if>
+            <if test="relativePath != null">#{relativePath},</if>
+            <if test="totalChunks != null">#{totalChunks},</if>
+            <if test="totalSize != null">#{totalSize},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysChunk" parameterType="SysChunk">
+        update sys_chunk
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="chunkNumber != null">chunk_number = #{chunkNumber},</if>
+            <if test="chunkSize != null">chunk_size = #{chunkSize},</if>
+            <if test="currentChunkSize != null">current_chunk_size = #{currentChunkSize},</if>
+            <if test="filename != null">file_name = #{filename},</if>
+            <if test="identifier != null">identifier = #{identifier},</if>
+            <if test="relativePath != null">relative_path = #{relativePath},</if>
+            <if test="totalChunks != null">total_chunks = #{totalChunks},</if>
+            <if test="totalSize != null">total_size = #{totalSize},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where chunk_id = #{chunkId}
+    </update>
+
+    <delete id="deleteSysChunkById" parameterType="Long">
+        delete from sys_chunk where chunk_id = #{chunkId}
+    </delete>
+
+    <delete id="deleteSysChunkByIds" parameterType="String">
+        delete from sys_chunk where chunk_id in
+        <foreach item="chunkId" collection="array" open="(" separator="," close=")">
+            #{chunkId}
+        </foreach>
+    </delete>
+
+</mapper>

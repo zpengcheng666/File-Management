@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocBorrowRecordsMapper">
+    
+    <resultMap type="DocBorrowRecords" id="DocBorrowRecordsResult">
+        <result property="borrowId"    column="borrow_id"    />
+        <result property="borrowerUserId"    column="borrower_user_id"    />
+        <result property="borrower"    column="borrower"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="department"    column="department"    />
+        <result property="borrowType"    column="borrow_type"    />
+        <result property="borrowDate"    column="borrow_date"    />
+        <result property="returnDate"    column="return_date"    />
+        <result property="isOverdue"    column="is_overdue"    />
+        <result property="returnConfirmerUserId"    column="return_confirmer_user_id"    />
+        <result property="returnConfirmer"    column="return_confirmer"    />
+        <result property="borrowReason"    column="borrow_reason"    />
+        <result property="approvalResult"    column="approval_result"    />
+        <result property="approvalSuggest"    column="approval_suggest"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="docId"    column="docId"    />
+        <result property="oriDocId"    column="ori_doc_id"    />
+        <result property="title"    column="title"    />
+        <result property="extendedDay"    column="extendedDay"    />
+        <result property="renewDay"    column="renewDay"    />
+        <result property="type"    column="type"    />
+        <result property="categoryId"    column="categoryId"    />
+        <result property="docContentId"    column="doc_content_id"    />
+        <result property="secretLevel"    column="secret_level"    />
+        <result property="id"    column="id"    />
+        <result property="returnType"    column="return_type"    />
+        <result property="name"    column="name"    />
+   <!-- <association property="borrowerUserIdMap" column="borrower_user_id"
+         select="refSelectSysUserList43"
+         javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+    <association property="deptIdMap" column="dept_id"
+         select="refSelectSysDeptList"
+         javaType="com.oaspi.common.core.domain.entity.SysDept"/>
+    <association property="returnConfirmerUserIdMap" column="return_confirmer_user_id"
+         select="refSelectSysUserList51"
+         javaType="com.oaspi.common.core.domain.entity.SysUser"/>-->
+<!--  <association property="bizCreateBy" column="create_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizUpdateBy" column="update_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </resultMap>
+
+<sql id="refSelectSysUserVo43">
+    select user_id, dept_id, user_name, nick_name, user_type, email, phonenumber, sex, avatar, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time, remark from sys_user
+</sql>
+ <resultMap type="SysUser" id="SysUserResult43">
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="userType"    column="user_type"    />
+        <result property="email"    column="email"    />
+        <result property="phonenumber"    column="phonenumber"    />
+        <result property="sex"    column="sex"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="password"    column="password"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="loginIp"    column="login_ip"    />
+        <result property="loginDate"    column="login_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+</resultMap>
+<select id="refSelectSysUserList43" parameterType="SysUser"
+ resultMap="SysUserResult43">
+        <include refid="refSelectSysUserVo43"/>
+        <where>
+        user_id = #{borrower_user_id}
+        </where>
+Limit 1
+ </select>
+<sql id="refSelectSysDeptVo45">
+    select dept_id, parent_id, ancestors, dept_name, order_num, leader, phone, email, status, del_flag, create_by, create_time, update_by, update_time from doc_dept
+</sql>
+ <resultMap type="SysDept" id="SysDeptResult45">
+        <result property="deptId"    column="dept_id"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="ancestors"    column="ancestors"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="leader"    column="leader"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+</resultMap>
+<select id="refSelectSysDeptList45" parameterType="SysDept"
+ resultMap="SysDeptResult45">
+        <include refid="refSelectSysDeptVo45"/>
+        <where>
+        dept_id = #{dept_id}
+        </where>
+Limit 1
+ </select>
+<sql id="refSelectSysUserVo51">
+    select user_id, dept_id, user_name, nick_name, user_type, email, phonenumber, sex, avatar, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time, remark from sys_user
+</sql>
+ <resultMap type="SysUser" id="SysUserResult51">
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="userType"    column="user_type"    />
+        <result property="email"    column="email"    />
+        <result property="phonenumber"    column="phonenumber"    />
+        <result property="sex"    column="sex"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="password"    column="password"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="loginIp"    column="login_ip"    />
+        <result property="loginDate"    column="login_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+</resultMap>
+<select id="refSelectSysUserList51" parameterType="SysUser"
+ resultMap="SysUserResult51">
+        <include refid="refSelectSysUserVo51"/>
+        <where>
+        user_id = #{return_confirmer_user_id}
+        </where>
+Limit 1
+ </select>
+    <sql id="selectDocBorrowRecordsVo">
+        select borrow_id, borrower_user_id, borrower, dept_id, department, borrow_type, borrow_date, return_date, is_overdue, return_confirmer_user_id, return_confirmer, borrow_reason, approval_result, approval_suggest, remark, del_flag, create_by, create_time, update_by, update_time from doc_borrow_records
+    </sql>
+    <select id="selectDocBorrowRecordsList" parameterType="DocBorrowRecords" resultMap="DocBorrowRecordsResult">
+        <include refid="selectDocBorrowRecordsVo"/>
+        <where>  
+            <if test="borrowerUserId != null "> and borrower_user_id = #{borrowerUserId}</if>
+            <if test="borrower != null  and borrower != ''"> and borrower = #{borrower}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="department != null  and department != ''"> and department = #{department}</if>
+            <if test="borrowType != null "> and borrow_type = #{borrowType}</if>
+            <if test="borrowDate != null "> and borrow_date = #{borrowDate}</if>
+            <if test="returnDate != null "> and return_date = #{returnDate}</if>
+            <if test="isOverdue != null "> and is_overdue = #{isOverdue}</if>
+            <if test="returnConfirmerUserId != null "> and return_confirmer_user_id = #{returnConfirmerUserId}</if>
+            <if test="returnConfirmer != null  and returnConfirmer != ''"> and return_confirmer = #{returnConfirmer}</if>
+            <if test="borrowReason != null  and borrowReason != ''"> and borrow_reason = #{borrowReason}</if>
+            <if test="approvalResult != null "> and approval_result = #{approvalResult}</if>
+            <if test="approvalSuggest != null  and approvalSuggest != ''"> and approval_suggest = #{approvalSuggest}</if>
+        </where>
+    </select>
+    <select id="selectDocBorrowRecordsByBorrowId" parameterType="Long" resultMap="DocBorrowRecordsResult">
+        <include refid="selectDocBorrowRecordsVo"/>
+        where borrow_id = #{borrowId}
+    </select>
+
+    <insert id="insertDocBorrowRecords" parameterType="DocBorrowRecords" useGeneratedKeys="true" keyProperty="borrowId">
+        insert into doc_borrow_records
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="borrowerUserId != null">borrower_user_id,</if>
+            <if test="borrower != null and borrower != ''">borrower,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="department != null">department,</if>
+            <if test="borrowType != null">borrow_type,</if>
+            <if test="borrowDate != null">borrow_date,</if>
+            <if test="returnDate != null">return_date,</if>
+            <if test="isOverdue != null">is_overdue,</if>
+            <if test="returnConfirmerUserId != null">return_confirmer_user_id,</if>
+            <if test="returnConfirmer != null">return_confirmer,</if>
+            <if test="borrowReason != null">borrow_reason,</if>
+            <if test="approvalResult != null">approval_result,</if>
+            <if test="approvalSuggest != null">approval_suggest,</if>
+            <if test="remark != null">remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="borrowerUserId != null">#{borrowerUserId},</if>
+            <if test="borrower != null and borrower != ''">#{borrower},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="department != null">#{department},</if>
+            <if test="borrowType != null">#{borrowType},</if>
+            <if test="borrowDate != null">#{borrowDate},</if>
+            <if test="returnDate != null">#{returnDate},</if>
+            <if test="isOverdue != null">#{isOverdue},</if>
+            <if test="returnConfirmerUserId != null">#{returnConfirmerUserId},</if>
+            <if test="returnConfirmer != null">#{returnConfirmer},</if>
+            <if test="borrowReason != null">#{borrowReason},</if>
+            <if test="approvalResult != null">#{approvalResult},</if>
+            <if test="approvalSuggest != null">#{approvalSuggest},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDocBorrowRecords" parameterType="DocBorrowRecords">
+        update doc_borrow_records
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="borrowerUserId != null">borrower_user_id = #{borrowerUserId},</if>
+            <if test="borrower != null and borrower != ''">borrower = #{borrower},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="department != null">department = #{department},</if>
+            <if test="borrowType != null">borrow_type = #{borrowType},</if>
+            <if test="borrowDate != null">borrow_date = #{borrowDate},</if>
+            <if test="returnDate != null">return_date = #{returnDate},</if>
+            <if test="isOverdue != null">is_overdue = #{isOverdue},</if>
+            <if test="returnConfirmerUserId != null">return_confirmer_user_id = #{returnConfirmerUserId},</if>
+            <if test="returnConfirmer != null">return_confirmer = #{returnConfirmer},</if>
+            <if test="borrowReason != null">borrow_reason = #{borrowReason},</if>
+            <if test="approvalResult != null">approval_result = #{approvalResult},</if>
+            <if test="approvalSuggest != null">approval_suggest = #{approvalSuggest},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where borrow_id = #{borrowId}
+    </update>
+
+    <delete id="deleteDocBorrowRecordsByBorrowId" parameterType="Long">
+        delete from doc_borrow_records where borrow_id = #{borrowId}
+    </delete>
+
+    <delete id="deleteDocBorrowRecordsByBorrowIds" parameterType="String">
+        delete from doc_borrow_records where borrow_id in 
+        <foreach item="borrowId" collection="array" open="(" separator="," close=")">
+            #{borrowId}
+        </foreach>
+    </delete>
+
+    <update id="updCollectionType" parameterType="DocBorrowRecords">
+        update doc_info set collection_type = '1' where id = #{docId}
+    </update>
+
+    <update id="delCollectionType" parameterType="DocBorrowRecords">
+        update doc_info set collection_type = '0' where id = #{docId}
+    </update>
+
+    <select id="archivesApplovalList" resultMap="DocBorrowRecordsResult">
+        select c.borrower,'实体档案' as type,c.borrow_date,c.department,c.borrow_date,c.return_date,c.borrow_reason,c.remark,a.ori_doc_id,a.title,a.id as docId from doc_info a
+        inner join doc_borrow_archive b on a.id = b. doc_info_id
+        inner join doc_borrow_records c on b.borrow_id = c.borrow_id
+        left join doc_borrow_approve d on b.borrow_id = d.borrow_id
+        where d.approval_result is null
+    </select>
+
+    <select id="selarchivesApplovalList" parameterType="DocBorrowRecords" resultMap="DocBorrowRecordsResult">
+        select a.borrow_date,a.department,a.borrow_date,a.return_date,a.borrow_reason,a.remark,a.borrow_id,a.borrower,
+        case when a.return_date > (select curdate()) and a.return_type in ('0','2') then '超期'
+        when a.return_type = '0' then '未归还'
+        when a.return_type = '1' then '已归还'
+        when a.return_type = '2' then '续借' end as return_type
+        from doc_borrow_records a
+        <where>
+            <if test="approvalResult != null">and a.approval_result is null</if>
+            <if test="borrowId != null">and a.borrow_id = #{borrowId}</if>
+        </where>
+    </select>
+
+    <select id="archivesApploval" resultMap="DocBorrowRecordsResult">
+        select c.borrower,'实体档案' as type,c.borrow_date,c.department,c.borrow_date,c.return_date,c.borrow_reason,c.remark,a.ori_doc_id,a.title,a.id as docId,d.approval_result
+        from doc_info a
+                 inner join doc_borrow_archive b on a.id = b. doc_info_id
+                 inner join doc_borrow_records c on b.borrow_id = c.borrow_id
+                 inner join doc_borrow_approve d on b.borrow_id = d.borrow_id
+        where d.approval_result in ('0','1')
+    </select>
+
+    <update id="updApprove" parameterType="DocBorrowRecords">
+        update doc_borrow_records
+            set approval_result = #{approvalResult},approval_suggest = #{approvalSuggest}
+        where borrow_id = #{borrowId}
+    </update>
+
+    <update id="updReturn" parameterType="DocBorrowRecords">
+        update doc_borrow_records
+        set return_confirmer_user_id = #{createBy},return_confirmer = #{returnConfirmer},return_date = #{createTime},
+            update_by = #{createBy},update_time = #{createTime},return_type = '1'
+        where borrow_id = #{borrowId}
+    </update>
+
+    <update id="updRenew" parameterType="DocBorrowRecords">
+        update doc_borrow_records
+        set  update_by = #{createBy},update_time = #{createTime},return_type = '2'
+        where borrow_id = #{borrowId}
+    </update>
+
+    <select id="selUserName" resultType="String" parameterType="String">
+        select nick_name from sys_user where user_id = #{userId}
+    </select>
+
+    <select id="selDeptId" resultType="String" parameterType="String">
+        select dept_id from sys_user where user_id = #{userId}
+    </select>
+
+    <select id="selDept" resultType="String" parameterType="String">
+        select dept_name from doc_dept where dept_id = #{deptId}
+    </select>
+
+    <select id="selBorrowId" resultType="Long" parameterType="Long">
+        select a.borrow_id from doc_borrow_archive a where a.doc_info_id = #{docId}
+                                                   and not exists(select 1 from doc_borrow_records b where a.borrow_id = b.borrow_id and b.return_type = '1' )
+    </select>
+
+    <select id="beReturnList" parameterType="DocBorrowRecords" resultMap="DocBorrowRecordsResult">
+        select c.borrower,c.borrow_date,c.department,c.borrow_date,c.return_date,c.borrow_reason,c.remark,a.ori_doc_id,a.title,a.id as docId
+        from doc_info a
+        left join doc_borrow_archive b on a.id = b. doc_info_id
+        left join doc_borrow_records c on b.borrow_id = c.borrow_id
+        left join doc_borrow_approve d on b.borrow_id = d.borrow_id
+        where c.return_type in ('0','2') and a.del_flag = '0' and a.archive_status = '2' and c.approval_result = '1'
+        <if test="categoryId != null "> and a.category = #{categoryId}</if>
+    </select>
+
+    <select id="returnList" parameterType="DocBorrowRecords" resultMap="DocBorrowRecordsResult">
+        select c.borrower,c.borrow_date,c.department,c.borrow_date,c.return_date,c.borrow_reason,c.remark,a.ori_doc_id,a.title,a.id as docId
+        from doc_info a
+                 left join doc_borrow_archive b on a.id = b. doc_info_id
+                 left join doc_borrow_records c on b.borrow_id = c.borrow_id
+                 left join doc_borrow_approve d on b.borrow_id = d.borrow_id
+        where c.return_type = '1' and a.del_flag = '0' and a.archive_status = '2'
+        <if test="categoryId != null "> and a.category = #{categoryId}</if>
+    </select>
+
+    <select id="extended" parameterType="DocBorrowRecords" resultMap="DocBorrowRecordsResult">
+        select datediff(c.return_date,(select curdate())) as extendedDay, c.borrower,c.borrow_date,c.department,c.borrow_date,c.return_date,c.borrow_reason,c.remark,a.ori_doc_id,a.title,a.id as docId
+        from doc_info a
+                 left join doc_borrow_archive b on a.id = b. doc_info_id
+                 left join doc_borrow_records c on b.borrow_id = c.borrow_id
+                 left join doc_borrow_approve d on b.borrow_id = d.borrow_id
+        where c.return_date > (select curdate()) and a.del_flag = '0' and a.archive_status = '2' and c.approval_result = '1'
+        <if test="categoryId != null "> and a.category = #{categoryId}</if>
+    </select>
+
+    <select id="selArchives" parameterType="DocBorrowRecords" resultType="Integer">
+        select count(1) from doc_borrow_records a
+                                 inner join doc_borrow_archive b on a.borrow_id = b.borrow_id
+        where a.return_type = '2' and b.doc_info_id = #{docId}
+    </select>
+
+    <select id="collectionTypeList" parameterType="DocBorrowRecords" resultMap="DocBorrowRecordsResult">
+        select id,ori_doc_id,b.dict_label as secret_level,title,doc_content_id from doc_info a
+            left join sys_dict_data b on a.secret_level = b.dict_code and b.dict_type ='doc_sec_period'
+        where collection_type = '1'
+    </select>
+
+    <select id="selDocInfoList" parameterType="DocBorrowRecords" resultMap="DocBorrowRecordsResult">
+        select a.id as docId,a.ori_doc_id,a.title,b.name from doc_info a
+        left join doc_category b on a.category = b.id
+        where a.id in (select doc_info_id from doc_borrow_archive where borrow_id = #{borrowId})
+    </select>
+
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocIdentifyLogMapper">
+    
+    <resultMap type="DocIdentifyLog" id="DocIdentifyLogResult">
+        <result property="id"    column="id"    />
+        <result property="docId"    column="doc_id"    />
+        <result property="fromStatus"    column="from_status"    />
+        <result property="toStatus"    column="to_status"    />
+        <result property="identifyResult"    column="identify_result"    />
+        <result property="identifyUser"    column="identify_user"    />
+        <result property="identifyTime"    column="identify_time"    />
+        <result property="comment"    column="comment"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+
+    <association property="identifyUserMap" column="identify_user"
+         select="refSelectSysUserList"
+         javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizCreateBy" column="create_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizUpdateBy" column="update_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </resultMap>
+
+<sql id="refSelectSysUserVo35">
+    select user_id, dept_id, user_name, nick_name, user_type, email, phonenumber, sex, avatar, password, status, del_flag, login_ip, login_date, create_by, create_time, update_by, update_time, remark from sys_user
+</sql>
+ <resultMap type="SysUser" id="SysUserResult35">
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="userType"    column="user_type"    />
+        <result property="email"    column="email"    />
+        <result property="phonenumber"    column="phonenumber"    />
+        <result property="sex"    column="sex"    />
+        <result property="avatar"    column="avatar"    />
+        <result property="password"    column="password"    />
+        <result property="status"    column="status"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="loginIp"    column="login_ip"    />
+        <result property="loginDate"    column="login_date"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+</resultMap>
+<select id="refSelectSysUserList35" parameterType="SysUser"
+ resultMap="SysUserResult35">
+        <include refid="refSelectSysUserVo35"/>
+        <where>
+        user_id = #{identify_user}
+        </where>
+Limit 1
+ </select>
+    <sql id="selectDocIdentifyLogVo">
+        select id, doc_id, from_status, to_status, identify_result, identify_user, identify_time, comment, del_flag, create_by, create_time, update_by, update_time, remark from doc_identify_log
+    </sql>
+    <select id="selectDocIdentifyLogList" parameterType="DocIdentifyLog" resultMap="DocIdentifyLogResult">
+        <include refid="selectDocIdentifyLogVo"/>
+        <where>  
+            <if test="docId != null "> and doc_id = #{docId}</if>
+            <if test="fromStatus != null "> and from_status = #{fromStatus}</if>
+            <if test="toStatus != null "> and to_status = #{toStatus}</if>
+            <if test="identifyResult != null "> and identify_result = #{identifyResult}</if>
+            <if test="identifyUser != null "> and identify_user = #{identifyUser}</if>
+            <if test="identifyTime != null "> and identify_time = #{identifyTime}</if>
+            <if test="comment != null  and comment != ''"> and comment = #{comment}</if>
+        </where>
+    </select>
+    <select id="selectDocIdentifyLogById" parameterType="Long" resultMap="DocIdentifyLogResult">
+        <include refid="selectDocIdentifyLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDocIdentifyLog" parameterType="DocIdentifyLog" useGeneratedKeys="true" keyProperty="id">
+        insert into doc_identify_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="docId != null">doc_id,</if>
+            <if test="fromStatus != null">from_status,</if>
+            <if test="toStatus != null">to_status,</if>
+            <if test="identifyResult != null">identify_result,</if>
+            <if test="identifyUser != null">identify_user,</if>
+            <if test="identifyTime != null">identify_time,</if>
+            <if test="comment != null">comment,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="docId != null">#{docId},</if>
+            <if test="fromStatus != null">#{fromStatus},</if>
+            <if test="toStatus != null">#{toStatus},</if>
+            <if test="identifyResult != null">#{identifyResult},</if>
+            <if test="identifyUser != null">#{identifyUser},</if>
+            <if test="identifyTime != null">#{identifyTime},</if>
+            <if test="comment != null">#{comment},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDocIdentifyLog" parameterType="DocIdentifyLog">
+        update doc_identify_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="docId != null">doc_id = #{docId},</if>
+            <if test="fromStatus != null">from_status = #{fromStatus},</if>
+            <if test="toStatus != null">to_status = #{toStatus},</if>
+            <if test="identifyResult != null">identify_result = #{identifyResult},</if>
+            <if test="identifyUser != null">identify_user = #{identifyUser},</if>
+            <if test="identifyTime != null">identify_time = #{identifyTime},</if>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDocIdentifyLogById" parameterType="Long">
+        delete from doc_identify_log where id = #{id}
+    </delete>
+
+    <delete id="deleteDocIdentifyLogByIds" parameterType="String">
+        delete from doc_identify_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocBoxMapper">
+    
+    <resultMap type="DocBox" id="DocBoxResult">
+        <result property="boxId"    column="box_id"    />
+        <result property="boxName"    column="box_name"    />
+        <result property="shelvesNo"    column="shelves_no"    />
+        <result property="boxRow"    column="box_row"    />
+        <result property="boxColumn"    column="box_column"    />
+        <result property="coffersNo"    column="coffers_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="boxcount"    column="boxcount"    />
+
+    <association property="shelvesNoMap" column="shelves_no"
+         select="refSelectDocShelvesList22"
+         javaType="com.aspi.docmanage.domain.DocShelves"/>
+    <association property="coffersNoMap" column="coffers_no"
+         select="refSelectDocCoffersList25"
+         javaType="com.aspi.docmanage.domain.DocCoffers"/>
+  <association property="bizCreateBy" column="create_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizUpdateBy" column="update_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+
+
+
+
+
+
+
+
+
+    </resultMap>
+
+<sql id="refSelectDocShelvesVo22">
+    select shelves_no, shelves_name, shelves_type, box, coffers_no, create_time, create_by, del_flag from doc_shelves
+</sql>
+ <resultMap type="DocShelves" id="DocShelvesResult22">
+        <result property="shelvesNo"    column="shelves_no"    />
+        <result property="shelvesName"    column="shelves_name"    />
+        <result property="shelvesType"    column="shelves_type"    />
+        <result property="box"    column="box"    />
+        <result property="coffersNo"    column="coffers_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="delFlag"    column="del_flag"    />
+</resultMap>
+<select id="refSelectDocShelvesList22" parameterType="DocShelves"
+ resultMap="DocShelvesResult22">
+        <include refid="refSelectDocShelvesVo22"/>
+        <where>
+        shelves_no = #{shelves_no}
+        </where>
+Limit 1
+ </select>
+<sql id="refSelectDocCoffersVo25">
+    select coffers_no, name, shelves_num, shelves_row, shelves_column, remark, box, user, create_time, create_by, del_flag from doc_coffers
+</sql>
+<resultMap type="DocCoffers" id="DocCoffersResult25">
+  <result property="coffersNo"    column="coffers_no"    />
+  <result property="name"    column="name"    />
+  <result property="shelvesNum"    column="shelves_num"    />
+  <result property="shelvesRow"    column="shelves_row"    />
+  <result property="shelvesColumn"    column="shelves_column"    />
+  <result property="remark"    column="remark"    />
+  <result property="box"    column="box"    />
+  <result property="user"    column="user"    />
+  <result property="createTime"    column="create_time"    />
+  <result property="createBy"    column="create_by"    />
+  <result property="delFlag"    column="del_flag"    />
+</resultMap>
+<select id="refSelectDocCoffersList25" parameterType="DocCoffers"
+ resultMap="DocCoffersResult25">
+        <include refid="refSelectDocCoffersVo25"/>
+        <where>
+        coffers_no = #{coffers_no}
+        </where>
+Limit 1
+ </select>
+    <sql id="selectDocBoxVo">
+        select distinct a.box_id, a.box_name, a.shelves_no, a.box_row, a.box_column, a.coffers_no, a.create_time, a.create_by, a.del_flag,b.boxcount from doc_box a
+        left join (select box_id,count(box_id) as boxcount from doc_info group by box_id) b on a.box_id = b.box_id
+    </sql>
+    <select id="selectDocBoxList" parameterType="DocBox" resultMap="DocBoxResult">
+        <include refid="selectDocBoxVo"/>
+        <where>  
+            <if test="boxName != null  and boxName != ''"> and a.box_name like concat('%', #{boxName}, '%')</if>
+            <if test="shelvesNo != null  and shelvesNo != ''"> and a.shelves_no = #{shelvesNo}</if>
+            <if test="boxRow != null "> and a.box_row = #{boxRow}</if>
+            <if test="boxColumn != null "> and a.box_column = #{boxColumn}</if>
+            <if test="coffersNo != null "> and a.coffers_no = #{coffersNo}</if>
+        </where>
+    </select>
+    <select id="selectDocBoxByBoxId" parameterType="String" resultMap="DocBoxResult">
+        <include refid="selectDocBoxVo"/>
+        where box_id = #{boxId}
+    </select>
+
+    <insert id="insertDocBox" parameterType="DocBox">
+        insert into doc_box
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="boxId != null">box_id,</if>
+            <if test="boxName != null">box_name,</if>
+            <if test="shelvesNo != null">shelves_no,</if>
+            <if test="boxRow != null">box_row,</if>
+            <if test="boxColumn != null">box_column,</if>
+            <if test="coffersNo != null">coffers_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="boxId != null">#{boxId},</if>
+            <if test="boxName != null">#{boxName},</if>
+            <if test="shelvesNo != null">#{shelvesNo},</if>
+            <if test="boxRow != null">#{boxRow},</if>
+            <if test="boxColumn != null">#{boxColumn},</if>
+            <if test="coffersNo != null">#{coffersNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDocBox" parameterType="DocBox">
+        update doc_box
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="boxName != null">box_name = #{boxName},</if>
+            <if test="shelvesNo != null">shelves_no = #{shelvesNo},</if>
+            <if test="boxRow != null">box_row = #{boxRow},</if>
+            <if test="boxColumn != null">box_column = #{boxColumn},</if>
+            <if test="coffersNo != null">coffers_no = #{coffersNo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where box_id = #{boxId}
+    </update>
+
+    <delete id="deleteDocBoxByBoxId" parameterType="String">
+        delete from doc_box where box_id = #{boxId}
+    </delete>
+
+    <delete id="deleteDocBoxByBoxIds" parameterType="String">
+        delete from doc_box where box_id in 
+        <foreach item="boxId" collection="array" open="(" separator="," close=")">
+            #{boxId}
+        </foreach>
+    </delete>
+
+</mapper>

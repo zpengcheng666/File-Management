@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocTurnMapper">
+
+    <resultMap type="DocTurn" id="DocTurnResult">
+        <result property="id"    column="id"    />
+        <result property="companyName"    column="company_name"    />
+        <result property="turnType"    column="turn_type"    />
+        <result property="num"    column="num"    />
+        <result property="title"    column="title"    />
+        <result property="operator"    column="operator"    />
+        <result property="turnTime"    column="turn_time"    />
+        <result property="heir"    column="heir"    />
+        <result property="tel"    column="tel"    />
+        <result property="fileCount"    column="file_count"    />
+        <result property="docCount"    column="doc_count"    />
+    </resultMap>
+
+    <sql id="selectDocTurnVo">
+        select id, company_name, turn_type, num, title, operator, turn_time, heir, tel, file_count, doc_count from doc_turn
+    </sql>
+
+    <select id="selectDocTurnList" parameterType="DocTurn" resultMap="DocTurnResult">
+        <include refid="selectDocTurnVo"/>
+        <where>
+            <if test="companyName != null  and companyName != ''"> and company_name like concat('%', #{companyName}, '%')</if>
+            <if test="turnType != null "> and turn_type = #{turnType}</if>
+            <if test="num != null  and num != ''"> and num = #{num}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="turnTime != null "> and turn_time = #{turnTime}</if>
+            <if test="heir != null  and heir != ''"> and heir = #{heir}</if>
+            <if test="tel != null  and tel != ''"> and tel = #{tel}</if>
+            <if test="fileCount != null "> and file_count = #{fileCount}</if>
+            <if test="docCount != null "> and doc_count = #{docCount}</if>
+        </where>
+    </select>
+
+    <select id="selectDocTurnById" parameterType="Long" resultMap="DocTurnResult">
+        <include refid="selectDocTurnVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDocTurn" parameterType="DocTurn" useGeneratedKeys="true" keyProperty="id">
+        insert into doc_turn
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyName != null">company_name,</if>
+            <if test="turnType != null">turn_type,</if>
+            <if test="num != null">num,</if>
+            <if test="title != null">title,</if>
+            <if test="operator != null">operator,</if>
+            <if test="turnTime != null">turn_time,</if>
+            <if test="heir != null">heir,</if>
+            <if test="tel != null">tel,</if>
+            <if test="fileCount != null">file_count,</if>
+            <if test="docCount != null">doc_count,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyName != null">#{companyName},</if>
+            <if test="turnType != null">#{turnType},</if>
+            <if test="num != null">#{num},</if>
+            <if test="title != null">#{title},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="turnTime != null">#{turnTime},</if>
+            <if test="heir != null">#{heir},</if>
+            <if test="tel != null">#{tel},</if>
+            <if test="fileCount != null">#{fileCount},</if>
+            <if test="docCount != null">#{docCount},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDocTurn" parameterType="DocTurn">
+        update doc_turn
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyName != null">company_name = #{companyName},</if>
+            <if test="turnType != null">turn_type = #{turnType},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="turnTime != null">turn_time = #{turnTime},</if>
+            <if test="heir != null">heir = #{heir},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="fileCount != null">file_count = #{fileCount},</if>
+            <if test="docCount != null">doc_count = #{docCount},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDocTurnById" parameterType="Long">
+        delete from doc_turn where id = #{id}
+    </delete>
+
+    <delete id="deleteDocTurnByIds" parameterType="String">
+        delete from doc_turn where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

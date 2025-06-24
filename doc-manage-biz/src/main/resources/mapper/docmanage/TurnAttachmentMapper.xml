@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.TurnAttachmentMapper">
+
+    <resultMap type="TurnAttachment" id="TurnAttachmentResult">
+        <result property="turnId"    column="turn_id"    />
+        <result property="attachment"    column="attachment"    />
+    </resultMap>
+
+    <sql id="selectTurnAttachmentVo">
+        select turn_id, attachment from turn_attachment
+    </sql>
+
+    <select id="selectTurnAttachmentList" parameterType="TurnAttachment" resultMap="TurnAttachmentResult">
+        <include refid="selectTurnAttachmentVo"/>
+        <where>
+            <if test="turnId != null "> and turn_id = #{turnId}</if>
+            <if test="attachment != null "> and attachment = #{attachment}</if>
+        </where>
+    </select>
+
+    <select id="selectTurnAttachmentByTurnId" parameterType="Long" resultMap="TurnAttachmentResult">
+        <include refid="selectTurnAttachmentVo"/>
+        where turn_id = #{turnId}
+    </select>
+
+    <insert id="insertTurnAttachment" parameterType="TurnAttachment">
+        insert into turn_attachment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="turnId != null">turn_id,</if>
+            <if test="attachment != null">attachment,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="turnId != null">#{turnId},</if>
+            <if test="attachment != null">#{attachment},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTurnAttachment" parameterType="TurnAttachment">
+        update turn_attachment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="attachment != null">attachment = #{attachment},</if>
+        </trim>
+        where turn_id = #{turnId}
+    </update>
+
+    <delete id="deleteTurnAttachmentByTurnId" parameterType="Long">
+        delete from turn_attachment where turn_id = #{turnId}
+    </delete>
+
+    <delete id="deleteTurnAttachmentByTurnIds" parameterType="String">
+        delete from turn_attachment where turn_id in
+        <foreach item="turnId" collection="array" open="(" separator="," close=")">
+            #{turnId}
+        </foreach>
+    </delete>
+</mapper>

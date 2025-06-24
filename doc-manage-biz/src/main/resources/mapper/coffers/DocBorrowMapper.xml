@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocBorrowMapper">
+
+  <select id="listDocBorrow" resultType="DocBorrow">
+    select b.id id, b.title title, b.category category, b.secure_level secureLevel,
+        b.company_id companyId, b.dept_id deptId, b.user_id userId,
+        c.company_name companyName, d.dept_name deptName, u.nick_name nickName,
+        b.start_time startTime, b.end_time endTime,
+        b.borrow_status borrowStatus, b.description description
+      from doc_borrow b
+      left join doc_company c on b.company_id = c.company_id
+      left join doc_dept d on b.dept_id = d.dept_id
+      left join sys_user u on b.user_id = u.user_id
+      where b.del_flag = 0
+      <if test="userId != null">
+        and b.user_id = #{userId}
+      </if>
+      <if test="borrowStatus != null">
+        and b.borrow_status = #{borrowStatus}
+      </if>
+  </select>
+
+  <insert id="addDocBorrow" parameterType="DocBorrow">
+    insert into doc_borrow
+    (doc_info_id, doc_info_num, title, category, secure_level, company_id, dept_id, user_id,
+    start_time, end_time, borrow_status, description, del_flag)
+        values (#{docInfoId}, #{docInfoNum}, #{title}, #{category}, #{secureLevel}, #{companyId},
+        #{deptId}, #{userId}, #{startTime}, #{endTime}, #{borrowStatus}, #{description}, 0)
+  </insert>
+
+  <delete id="deleteDocBorrow" parameterType="Long">
+    delete from doc_borrow where id = #{id}
+  </delete>
+
+  <update id="updateDocBorrowStatus" parameterType="docBorrow">
+    update doc_borrow set borrow_status = #{borrowStatus} where id = #{id}
+  </update>
+
+</mapper>

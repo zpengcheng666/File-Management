@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oaspi.system.mapper.DocDeptMapper">
+
+    <resultMap type="DocDept" id="DocDeptResult">
+        <result property="deptId" column="dept_id"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="deptCode" column="dept_code"/>
+        <result property="deptLinker" column="dept_linker"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="companyId" column="company_id"/>
+        <result property="parentId" column="parent_id"/>
+    </resultMap>
+
+    <sql id="selectDocDeptVo">
+        select dept_id, dept_name, dept_code, dept_linker, del_flag, company_id, parent_id
+        from doc_dept
+    </sql>
+
+    <select id="selectDocDeptList" parameterType="DocDept" resultMap="DocDeptResult">
+        <include refid="selectDocDeptVo"/>
+        <where>
+            <if test="deptName != null  and deptName != ''">and dept_name like concat('%', #{deptName}, '%')</if>
+            <if test="deptCode != null  and deptCode != ''">and dept_code = #{deptCode}</if>
+            <if test="deptLinker != null  and deptLinker != ''">and dept_linker = #{deptLinker}</if>
+            <if test="companyId != null ">and company_id = #{companyId}</if>
+            <if test="parentId != null ">and parent_id = #{parentId}</if>
+        </where>
+    </select>
+
+    <select id="selectDocDeptByDeptId" parameterType="Long" resultMap="DocDeptResult">
+        <include refid="selectDocDeptVo"/>
+        where dept_id = #{deptId}
+    </select>
+    <select id="getDepartmentsByCompanyId" parameterType="Long" resultMap="DocDeptResult">
+        <include refid="selectDocDeptVo"/>
+        WHERE company_id = #{companyId}
+        AND del_flag = 0
+    </select>
+    <select id="selectDocDeptByDeptName" parameterType="DocDept" resultMap="DocDeptResult">
+        <include refid="selectDocDeptVo"/>
+        where dept_name = #{deptName} and company_id = #{companyId} and del_flag = 0
+    </select>
+
+    <insert id="insertDocDept" parameterType="DocDept" useGeneratedKeys="true" keyProperty="deptId">
+        insert into doc_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptName != null and deptName != ''">dept_name,</if>
+            <if test="deptCode != null">dept_code,</if>
+            <if test="deptLinker != null">dept_linker,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="companyId != null">company_id,</if>
+            <if test="parentId != null">parent_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptName != null and deptName != ''">#{deptName},</if>
+            <if test="deptCode != null">#{deptCode},</if>
+            <if test="deptLinker != null">#{deptLinker},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="companyId != null">#{companyId},</if>
+            <if test="parentId != null">#{parentId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDocDept" parameterType="DocDept">
+        update doc_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
+            <if test="deptCode != null">dept_code = #{deptCode},</if>
+            <if test="deptLinker != null">dept_linker = #{deptLinker},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="companyId != null">company_id = #{companyId},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+        </trim>
+        where dept_id = #{deptId}
+    </update>
+
+    <delete id="deleteDocDeptByDeptId" parameterType="Long">
+        delete
+        from doc_dept
+        where dept_id = #{deptId}
+    </delete>
+
+    <delete id="deleteDocDeptByDeptIds" parameterType="String">
+        delete from doc_dept where dept_id in
+        <foreach item="deptId" collection="array" open="(" separator="," close=")">
+            #{deptId}
+        </foreach>
+    </delete>
+</mapper>

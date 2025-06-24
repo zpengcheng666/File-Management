@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocBorrowArchiveMapper">
+    
+    <resultMap type="DocBorrowArchive" id="DocBorrowArchiveResult">
+        <result property="id"    column="id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="docInfoId"    column="doc_info_id"    />
+        <result property="borrowId"    column="borrow_id"    />
+
+    <association property="docInfoIdMap" column="doc_info_id"
+         select="refSelectDocInfoList24"
+         javaType="com.aspi.docmanage.domain.DocInfo"/>
+    <association property="borrowIdMap" column="borrow_id"
+         select="refSelectDocBorrowRecordsList25"
+         javaType="com.aspi.docmanage.domain.DocBorrowRecords"/>
+  <association property="bizCreateBy" column="create_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizUpdateBy" column="update_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+    </resultMap>
+
+<sql id="refSelectDocInfoVo24">
+    select id, category, doc_type, ori_doc_id, recieve_dept, title, secret_level, org_code, open_audit, write_date, assosiate_persons, doc_content_id, specsubi_name, keywords, recoder, record_place, record_date, duration, format, obj_from, resposible, content, has_file, page_cnt, status, destory_time, dept_id, del_flag, create_by, create_time, update_by, update_time, remark from doc_info
+</sql>
+ <resultMap type="DocInfo" id="DocInfoResult24">
+        <result property="id"    column="id"    />
+        <result property="category"    column="category"    />
+        <result property="docType"    column="doc_type"    />
+        <result property="oriDocId"    column="ori_doc_id"    />
+        <result property="recieveDept"    column="recieve_dept"    />
+        <result property="title"    column="title"    />
+        <result property="secretLevel"    column="secret_level"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="openAudit"    column="open_audit"    />
+        <result property="writeDate"    column="write_date"    />
+        <result property="assosiatePersons"    column="assosiate_persons"    />
+        <result property="docContentId"    column="doc_content_id"    />
+        <result property="specsubiName"    column="specsubi_name"    />
+        <result property="keywords"    column="keywords"    />
+        <result property="recoder"    column="recoder"    />
+        <result property="recordPlace"    column="record_place"    />
+        <result property="recordDate"    column="record_date"    />
+        <result property="duration"    column="duration"    />
+        <result property="format"    column="format"    />
+        <result property="objFrom"    column="obj_from"    />
+        <result property="resposible"    column="resposible"    />
+        <result property="content"    column="content"    />
+        <result property="hasFile"    column="has_file"    />
+        <result property="pageCnt"    column="page_cnt"    />
+        <result property="status"    column="status"    />
+        <result property="destoryTime"    column="destory_time"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+</resultMap>
+<select id="refSelectDocInfoList24" parameterType="DocInfo"
+ resultMap="DocInfoResult24">
+        <include refid="refSelectDocInfoVo24"/>
+        <where>
+        id = #{doc_info_id}
+        </where>
+Limit 1
+ </select>
+<sql id="refSelectDocBorrowRecordsVo25">
+    select borrow_id, borrower_user_id, borrower, dept_id, department, borrow_type, borrow_date, return_date, is_overdue, return_confirmer_user_id, return_confirmer, borrow_reason, approval_result, approval_suggest, remark, del_flag, create_by, create_time, update_by, update_time from doc_borrow_records
+</sql>
+ <resultMap type="DocBorrowRecords" id="DocBorrowRecordsResult25">
+        <result property="borrowId"    column="borrow_id"    />
+        <result property="borrowerUserId"    column="borrower_user_id"    />
+        <result property="borrower"    column="borrower"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="department"    column="department"    />
+        <result property="borrowType"    column="borrow_type"    />
+        <result property="borrowDate"    column="borrow_date"    />
+        <result property="returnDate"    column="return_date"    />
+        <result property="isOverdue"    column="is_overdue"    />
+        <result property="returnConfirmerUserId"    column="return_confirmer_user_id"    />
+        <result property="returnConfirmer"    column="return_confirmer"    />
+        <result property="borrowReason"    column="borrow_reason"    />
+        <result property="approvalResult"    column="approval_result"    />
+        <result property="approvalSuggest"    column="approval_suggest"    />
+        <result property="remark"    column="remark"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+</resultMap>
+<select id="refSelectDocBorrowRecordsList25" parameterType="DocBorrowRecords"
+ resultMap="DocBorrowRecordsResult25">
+        <include refid="refSelectDocBorrowRecordsVo25"/>
+        <where>
+        borrow_id = #{borrow_id}
+        </where>
+Limit 1
+ </select>
+    <sql id="selectDocBorrowArchiveVo">
+        select id, del_flag, create_by, create_time, update_by, update_time, doc_info_id, borrow_id from doc_borrow_archive
+    </sql>
+    <select id="selectDocBorrowArchiveList" parameterType="DocBorrowArchive" resultMap="DocBorrowArchiveResult">
+        <include refid="selectDocBorrowArchiveVo"/>
+        <where>  
+            <if test="docInfoId != null "> and doc_info_id = #{docInfoId}</if>
+            <if test="borrowId != null "> and borrow_id = #{borrowId}</if>
+        </where>
+    </select>
+    <select id="selectDocBorrowArchiveById" parameterType="Long" resultMap="DocBorrowArchiveResult">
+        <include refid="selectDocBorrowArchiveVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDocBorrowArchive" parameterType="DocBorrowArchive" useGeneratedKeys="true" keyProperty="id">
+        insert into doc_borrow_archive
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="docInfoId != null">doc_info_id,</if>
+            <if test="borrowId != null">borrow_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="docInfoId != null">#{docInfoId},</if>
+            <if test="borrowId != null">#{borrowId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDocBorrowArchive" parameterType="DocBorrowArchive">
+        update doc_borrow_archive
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="docInfoId != null">doc_info_id = #{docInfoId},</if>
+            <if test="borrowId != null">borrow_id = #{borrowId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDocBorrowArchiveById" parameterType="Long">
+        delete from doc_borrow_archive where id = #{id}
+    </delete>
+
+    <delete id="deleteDocBorrowArchiveByIds" parameterType="String">
+        delete from doc_borrow_archive where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

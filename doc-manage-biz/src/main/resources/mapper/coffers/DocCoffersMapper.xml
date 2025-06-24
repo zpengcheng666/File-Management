@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocCoffersMapper">
+    
+    <resultMap type="DocCoffers" id="DocCoffersResult">
+        <result property="name"    column="name"    />
+        <result property="coffersNo"    column="coffers_no"    />
+        <result property="shelvesNum"    column="shelves_num"    />
+        <result property="shelvesRow"    column="shelves_row"    />
+        <result property="shelvesColumn"    column="shelves_column"    />
+        <result property="box"    column="box"    />
+        <result property="remark"    column="remark"    />
+        <result property="user"    column="user"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <select id="coffersList" parameterType="DocCoffers" resultMap="DocCoffersResult">
+       select   distinct   coffers_no,
+                   name,
+                   shelves_num,
+                   shelves_row,
+                   shelves_column,
+                   remark,
+                   box,
+                   user
+       from doc_coffers where coffers_no = #{coffersNo} and del_flag = '0'
+    </select>
+
+    <select id="getCoffersByName" parameterType="java.lang.String" resultMap="DocCoffersResult">
+       select coffers_no, name
+       from doc_coffers where name = #{name} and del_flag = '0'
+    </select>
+    <insert id="instCoffers" parameterType="DocCoffers" useGeneratedKeys="true" keyProperty="coffersNo">
+        insert into doc_coffers(
+        name,
+        shelves_num,
+        shelves_row,
+        shelves_column,
+        remark,
+        box,
+        user,
+        create_by,
+        create_time
+        ) values (
+            #{name},
+            #{shelvesNum},
+            #{shelvesRow},
+            #{shelvesColumn},
+            #{remark},
+            #{box},
+            #{user},
+            #{createBy},
+            #{createTime}
+            )
+
+    </insert>
+
+    <update id="delCoffers" parameterType="DocCoffers">
+        update doc_coffers set del_flag = '1'
+        where coffers_no = #{coffersNo}
+    </update>
+
+    <update id="delShelves" parameterType="DocCoffers">
+        update doc_shelves set del_flag = '1'
+        where coffers_no = #{coffersNo}
+    </update>
+
+    <update id="delBox" parameterType="DocCoffers">
+        update doc_box set del_flag = '1'
+        where coffers_no = #{coffersNo}
+    </update>
+
+
+    <update id="down" parameterType="DocCoffers">
+        update doc_info set
+                            box_id = '',
+                            update_time = #{createTime},
+                            update_by = #{createBy},
+                            shelves_status = '2'
+        where box_id in (select box_id from doc_box where coffers_no = #{coffersNo})
+    </update>
+
+    <update id="updCoffers" parameterType="DocCoffers">
+        update doc_coffers
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="user != null">user = #{user},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where coffers_no = #{coffersNo}
+    </update>
+</mapper>

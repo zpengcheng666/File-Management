@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocTemperatureMapper">
+    
+    <resultMap type="DocTemperature" id="DocTemperatureResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="userName"    column="user_name"    />
+        <result property="indoorTemperature"    column="indoor_temperature"    />
+        <result property="outsideTemperature"    column="outside_temperature"    />
+        <result property="indoorHumidity"    column="indoor_humidity"    />
+        <result property="outsideHumidity"    column="outside_humidity"    />
+        <result property="remark"    column="remark"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="coffersNo"    column="coffers_no"    />
+
+  <association property="bizCreateBy" column="create_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizUpdateBy" column="update_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+
+
+
+
+
+
+
+
+
+
+
+
+    </resultMap>
+
+    <sql id="selectDocTemperatureVo">
+        select id, create_time, create_by, user_name, indoor_temperature, outside_temperature, indoor_humidity, outside_humidity, remark, update_time, update_by, del_flag from doc_temperature
+    </sql>
+    <select id="selectDocTemperatureList" parameterType="DocTemperature" resultMap="DocTemperatureResult">
+        <include refid="selectDocTemperatureVo"/>
+        <where>
+            del_flag = '0'
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="indoorTemperature != null  and indoorTemperature != ''"> and indoor_temperature = #{indoorTemperature}</if>
+            <if test="outsideTemperature != null  and outsideTemperature != ''"> and outside_temperature = #{outsideTemperature}</if>
+            <if test="indoorHumidity != null  and indoorHumidity != ''"> and indoor_humidity = #{indoorHumidity}</if>
+            <if test="outsideHumidity != null  and outsideHumidity != ''"> and outside_humidity = #{outsideHumidity}</if>
+            <if test="coffersNo != null  and coffersNo != ''"> and coffers_no = #{coffersNo}</if>
+            order by create_time desc
+        </where>
+    </select>
+    <select id="selectDocTemperatureById" parameterType="Long" resultMap="DocTemperatureResult">
+        <include refid="selectDocTemperatureVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDocTemperature" parameterType="DocTemperature" useGeneratedKeys="true" keyProperty="id">
+        insert into doc_temperature
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="coffersNo != null">coffers_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="indoorTemperature != null">indoor_temperature,</if>
+            <if test="outsideTemperature != null">outside_temperature,</if>
+            <if test="indoorHumidity != null">indoor_humidity,</if>
+            <if test="outsideHumidity != null">outside_humidity,</if>
+            <if test="remark != null">remark,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="coffersNo != null">#{coffersNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="indoorTemperature != null">#{indoorTemperature},</if>
+            <if test="outsideTemperature != null">#{outsideTemperature},</if>
+            <if test="indoorHumidity != null">#{indoorHumidity},</if>
+            <if test="outsideHumidity != null">#{outsideHumidity},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDocTemperature" parameterType="DocTemperature">
+        update doc_temperature
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="indoorTemperature != null">indoor_temperature = #{indoorTemperature},</if>
+            <if test="outsideTemperature != null">outside_temperature = #{outsideTemperature},</if>
+            <if test="indoorHumidity != null">indoor_humidity = #{indoorHumidity},</if>
+            <if test="outsideHumidity != null">outside_humidity = #{outsideHumidity},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDocTemperatureById" parameterType="Long">
+        delete from doc_temperature where id = #{id}
+    </delete>
+
+    <delete id="deleteDocTemperatureByIds" parameterType="String">
+        delete from doc_temperature where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

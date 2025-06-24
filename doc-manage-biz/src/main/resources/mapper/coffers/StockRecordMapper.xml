@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.StockRecordMapper">
+
+  <select id="listStockRecord" resultType="StockRecord">
+    select s.id id, s.coffer_id cofferId, c.name cofferName, s.person_name personName,
+      s.in_out_date inOutDate, s.in_time inTime, s.out_time outTime,
+      s.stock_remark stockRemark, s.status status
+      from doc_stock_record s
+      left join doc_coffers c on s.coffer_id = c.coffers_no
+      where s.del_flag = 0
+  </select>
+
+  <insert id="addStockRecord" parameterType="StockRecord">
+    insert into doc_stock_record
+    (coffer_id, person_name, in_out_date, in_time, out_time, stock_remark, status, del_flag)
+        values(#{cofferId}, #{personName}, #{inOutDate},
+        #{inTime}, #{outTime}, #{stockRemark}, #{status}, #{delFlag})
+  </insert>
+
+  <insert id="batchStockRecord" parameterType="StockRecord">
+    insert into doc_stock_record (coffer_id, person_name, in_out_date, in_time, out_time, stock_remark, status, del_flag) values
+    <foreach item="item" index="index" collection="list" separator=",">
+      (#{item.cofferId}, #{item.personName}, #{item.inOutDate},
+      #{item.inTime}, #{item.outTime}, #{item.stockRemark}, #{item.status}, #{item.delFlag})
+    </foreach>
+  </insert>
+
+  <delete id="deleteStockRecord" parameterType="Long">
+    delete from doc_stock_record where id = #{id}
+  </delete>
+
+</mapper>

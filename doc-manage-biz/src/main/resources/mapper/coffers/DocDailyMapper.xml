@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocDailyMapper">
+    
+    <resultMap type="DocDaily" id="DocDailyResult">
+        <result property="id"    column="id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="oriDocId"    column="ori_doc_id"    />
+        <result property="title"    column="title"    />
+        <result property="address"    column="address"    />
+        <result property="shelvesType"    column="shelves_type"    />
+        <result property="status"    column="status"    />
+        <result property="error"    column="error"    />
+        <result property="remark"    column="remark"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="coffersNo"    column="coffers_no"    />
+
+<!--    <association property="shelvesTypeMap" column="shelves_type"
+         select="refSelectDocCategoryList"
+         javaType="com.aspi.docmanage.domain.DocCategory"/>-->
+<!--
+  <association property="bizCreateBy" column="create_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizUpdateBy" column="update_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </resultMap>
+
+<sql id="refSelectDocCategoryVo34">
+    select id, name, pinyin, parent_id, del_flag, create_by, create_time, update_by, update_time, remark from doc_category
+</sql>
+ <resultMap type="DocCategory" id="DocCategoryResult34">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="pinyin"    column="pinyin"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+</resultMap>
+<select id="refSelectDocCategoryList34" parameterType="DocCategory"
+ resultMap="DocCategoryResult34">
+        <include refid="refSelectDocCategoryVo34"/>
+        <where>
+        $column.refField = #{shelves_type}
+        </where>
+Limit 1
+ </select>
+    <sql id="selectDocDailyVo">
+        select id, create_time, create_by, ori_doc_id, title, address, shelves_type, status, error, remark, update_time, update_by, del_flag from doc_daily
+    </sql>
+    <select id="selectDocDailyList" parameterType="DocDaily" resultMap="DocDailyResult">
+        <include refid="selectDocDailyVo"/>
+        <where>  
+            <if test="coffersNo != null  and coffersNo != ''"> and coffers_no = #{coffersNo}</if>
+            <if test="oriDocId != null  and oriDocId != ''"> and ori_doc_id = #{oriDocId}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="shelvesType != null  and shelvesType != ''"> and shelves_type = #{shelvesType}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="error != null  and error != ''"> and error = #{error}</if>
+            <if test="startDate != null  and startDate != ''"> and create_time &gt;= #{startDate}</if>
+            <if test="endDate != null  and endDate != ''"> and create_time &lt;= #{endDate}</if>
+        </where>
+    </select>
+    <select id="selectDocDailyById" parameterType="Long" resultMap="DocDailyResult">
+        <include refid="selectDocDailyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDocDaily" parameterType="DocDaily" useGeneratedKeys="true" keyProperty="id">
+        insert into doc_daily
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="coffersNo != null">coffers_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="oriDocId != null">ori_doc_id,</if>
+            <if test="title != null">title,</if>
+            <if test="address != null">address,</if>
+            <if test="shelvesType != null">shelves_type,</if>
+            <if test="status != null">status,</if>
+            <if test="error != null">error,</if>
+            <if test="remark != null">remark,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="coffersNo != null">#{coffersNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="oriDocId != null">#{oriDocId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="address != null">#{address},</if>
+            <if test="shelvesType != null">#{shelvesType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="error != null">#{error},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDocDaily" parameterType="DocDaily">
+        update doc_daily
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="oriDocId != null">ori_doc_id = #{oriDocId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="shelvesType != null">shelves_type = #{shelvesType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="error != null">error = #{error},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDocDailyById" parameterType="Long">
+        delete from doc_daily where id = #{id}
+    </delete>
+
+    <delete id="deleteDocDailyByIds" parameterType="String">
+        delete from doc_daily where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

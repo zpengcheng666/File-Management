@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aspi.docmanage.mapper.DocShelvesMapper">
+    
+    <resultMap type="DocShelves" id="DocShelvesResult">
+        <result property="id"    column="id"    />
+        <result property="shelvesNo"    column="shelves_no"    />
+        <result property="shelvesName"    column="shelves_name"    />
+        <result property="shelvesType"    column="shelves_type"    />
+        <result property="box"    column="box"    />
+        <result property="coffersNo"    column="coffers_no"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="title"    column="title"    />
+        <result property="oriDocId"    column="ori_doc_id"    />
+        <result property="name"    column="name"    />
+        <result property="shelvesRow"    column="shelves_row"    />
+        <result property="shelvesColumn"    column="shelves_column"    />
+    <association property="shelvesTypeMap" column="shelves_type"
+         select="refSelectDocCategoryList20"
+         javaType="com.aspi.docmanage.domain.DocCategory"/>
+    <association property="boxMap" column="box"
+         select="refSelectDocCoffersList21"
+         javaType="com.aspi.docmanage.domain.DocCoffers"/>
+  <association property="bizCreateBy" column="create_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+  <association property="bizUpdateBy" column="update_by"
+                      select="com.oaspi.system.mapper.SysUserMapper.selectUserByUserName"
+                      javaType="com.oaspi.common.core.domain.entity.SysUser"/>
+
+
+
+
+
+
+
+
+    </resultMap>
+
+<sql id="refSelectDocCategoryVo20">
+    select id, name, pinyin, parent_id, del_flag, create_by, create_time, update_by, update_time, remark from doc_category
+</sql>
+ <resultMap type="DocCategory" id="DocCategoryResult20">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="pinyin"    column="pinyin"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+</resultMap>
+<select id="refSelectDocCategoryList20" parameterType="DocCategory"
+ resultMap="DocCategoryResult20">
+        <include refid="refSelectDocCategoryVo20"/>
+        <where>
+        id = #{shelves_type}
+        </where>
+Limit 1
+ </select>
+<sql id="refSelectDocCoffersVo21">
+    select coffers_no, name, shelves_num, shelves_row, shelves_column, remark, box, user, create_time, create_by, del_flag from doc_coffers
+</sql>
+ <resultMap type="DocCoffers" id="DocCoffersResult21">
+        <result property="coffersNo"    column="coffers_no"    />
+        <result property="name"    column="name"    />
+        <result property="shelvesNum"    column="shelves_num"    />
+        <result property="shelvesRow"    column="shelves_row"    />
+        <result property="shelvesColumn"    column="shelves_column"    />
+        <result property="remark"    column="remark"    />
+        <result property="box"    column="box"    />
+        <result property="user"    column="user"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="delFlag"    column="del_flag"    />
+</resultMap>
+<select id="refSelectDocCoffersList21" parameterType="DocCoffers"
+ resultMap="DocCoffersResult21">
+        <include refid="refSelectDocCoffersVo21"/>
+        <where>
+        coffers_no = #{box}
+        </where>
+Limit 1
+ </select>
+    <sql id="selectDocShelvesVo">
+        select distinct  d.id,a.shelves_no, a.shelves_name, d.name as shelves_type, a.box, a.coffers_no, a.create_time, a.create_by, a.del_flag,e.shelves_column,e.shelves_row from doc_shelves a
+                                                               left join doc_box b on a.shelves_no = b.shelves_no
+                                                               left join doc_info c on b.box_id = c.box_id
+                                                               left join doc_category  d on a.shelves_type = d.id
+                                                               left join doc_coffers e on a.coffers_no = e.coffers_no
+    </sql>
+
+    <select id="selectDocShelvesList" parameterType="DocShelves" resultMap="DocShelvesResult">
+        <include refid="selectDocShelvesVo"/>
+        <where>
+            a.del_flag = '0'
+            <if test="shelvesName != null  and shelvesName != ''"> and a.shelves_name like concat('%', #{shelvesName}, '%')</if>
+            <if test="shelvesType != null  and shelvesType != ''"> and a.shelves_type = #{shelvesType}</if>
+            <if test="box != null "> and a.box = #{box}</if>
+            <if test="coffersNo != null  and coffersNo != ''"> and (a.coffers_no = #{coffersNo} or a.id = #{coffersNo})</if>
+            <if test="shelvesNo != null  and shelvesNo != ''"> and a.shelves_no = #{shelvesNo}</if>
+            <if test="title != null  and title != ''">and (c.title like concat('%', #{title}, '%') or c.ori_doc_id like concat('%', #{oriDocId}, '%'))</if>
+        </where>
+    </select>
+    <select id="selectDocShelvesByShelvesNo" parameterType="Long" resultMap="DocShelvesResult">
+        <include refid="selectDocShelvesVo"/>
+        where shelves_no = #{shelvesNo}
+    </select>
+
+    <insert id="insertDocShelves" parameterType="DocShelves" useGeneratedKeys="true" keyProperty="shelvesNo">
+        insert into doc_shelves
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="shelvesName != null">shelves_name,</if>
+            <if test="shelvesType != null">shelves_type,</if>
+            <if test="box != null">box,</if>
+            <if test="coffersNo != null">coffers_no,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="delFlag != null">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="shelvesName != null">#{shelvesName},</if>
+            <if test="shelvesType != null">#{shelvesType},</if>
+            <if test="box != null">#{box},</if>
+            <if test="coffersNo != null">#{coffersNo},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDocShelves" parameterType="DocShelves">
+        update doc_shelves
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shelvesName != null">shelves_name = #{shelvesName},</if>
+            <if test="shelvesType != null">shelves_type = #{shelvesType},</if>
+            <if test="box != null">box = #{box},</if>
+            <if test="coffersNo != null">coffers_no = #{coffersNo},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where shelves_no = #{shelvesNo}
+    </update>
+
+    <delete id="deleteDocShelvesByShelvesNo" parameterType="Long">
+        delete from doc_shelves where shelves_no = #{shelvesNo}
+    </delete>
+
+    <delete id="deleteDocShelvesByShelvesNos" parameterType="String">
+        delete from doc_shelves where shelves_no in 
+        <foreach item="shelvesNo" collection="array" open="(" separator="," close=")">
+            #{shelvesNo}
+        </foreach>
+    </delete>
+
+    <select id="selectAll" parameterType="DocShelves" resultMap="DocShelvesResult">
+        SELECT distinct a.coffers_no, a.id,b.name,a.shelves_name FROM doc_shelves a
+        left join doc_coffers b on a.coffers_no = b.coffers_no
+        where a.del_flag = '0'
+    </select>
+
+</mapper>

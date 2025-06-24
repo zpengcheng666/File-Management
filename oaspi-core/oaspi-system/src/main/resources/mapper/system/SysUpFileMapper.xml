@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oaspi.system.mapper.SysUpFileMapper">
+
+    <resultMap type="SysUpFile" id="SysUpFileResult">
+        <result property="id"    column="id"    />
+        <result property="storeType"    column="store_type"    />
+        <result property="name"    column="name"    />
+        <result property="oriName"    column="ori_name"    />
+        <result property="newName"    column="new_name"    />
+        <result property="path"    column="path"    />
+        <result property="url"    column="url"    />
+        <result property="md5"    column="md5"    />
+        <result property="type"    column="type"    />
+        <result property="bizType"    column="biz_type"    />
+        <result property="docinfoId"    column="docinfo_id"    />
+        <result property="bizValb"    column="biz_valb"    />
+        <result property="bizValc"    column="biz_valc"    />
+        <result property="bizVald"    column="biz_vald"    />
+        <result property="bizVale"    column="biz_vale"    />
+        <result property="flowNo"    column="flow_no"    />
+        <result property="sort"    column="sort"    />
+        <result property="bizId"    column="biz_id"    />
+        <result property="downTicket"    column="down_ticket"    />
+        <result property="size"    column="size"    />
+        <result property="dpi"    column="dpi"    />
+        <result property="pages"    column="pages"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <resultMap type="fileDocVo" id="VoResult">
+        <result property="category"    column="category"    />
+        <result property="docType"    column="doc_type"    />
+        <result property="id"    column="id"    />
+        <result property="storeType"    column="store_type"    />
+        <result property="name"    column="name"    />
+        <result property="oriName"    column="ori_name"    />
+        <result property="newName"    column="new_name"    />
+        <result property="path"    column="path"    />
+        <result property="url"    column="url"    />
+        <result property="md5"    column="md5"    />
+        <result property="type"    column="type"    />
+        <result property="bizType"    column="biz_type"    />
+        <result property="docinfoId"    column="docinfo_id"    />
+        <result property="bizVale"    column="biz_vale"    />
+        <result property="flowNo"    column="flow_no"    />
+        <result property="sort"    column="sort"    />
+        <result property="bizId"    column="biz_id"    />
+        <result property="downTicket"    column="down_ticket"    />
+        <result property="size"    column="size"    />
+        <result property="dpi"    column="dpi"    />
+        <result property="pages"    column="pages"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectSysUpFileVo">
+        select id, store_type, name, ori_name, new_name, path,flow_no, sort, url,dpi,pages, md5, type, biz_type, docinfo_id,
+               biz_valb, biz_valc, biz_vald, biz_vale, biz_id, down_ticket, size, create_by, create_time, update_by,
+            update_time, del_flag, remark
+        from sys_up_file
+    </sql>
+
+    <select id="selectSysUpFileList" parameterType="SysUpFile" resultMap="SysUpFileResult">
+        <include refid="selectSysUpFileVo"/>
+        <where>
+            <if test="storeType != null "> and store_type = #{storeType}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="oriName != null  and oriName != ''"> and ori_name like concat('%', #{oriName}, '%')</if>
+            <if test="newName != null  and newName != ''"> and new_name like concat('%', #{newName}, '%')</if>
+            <if test="path != null  and path != ''"> and path = #{path}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="md5 != null  and md5 != ''"> and md5 = #{md5}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="bizType != null  and bizType != ''"> and biz_type = #{bizType}</if>
+            <if test="bizId != null  and bizId != ''"> and biz_id = #{bizId}</if>
+            <if test="docinfoId != null  and docinfoId != ''"> and docinfo_id = #{docinfoId}</if>
+            <if test="bizValb != null  and bizValb != ''"> and biz_valb = #{bizValb}</if>
+            <if test="bizValc != null  and bizValc != ''"> and biz_valc = #{bizValc}</if>
+            <if test="bizVald != null  and bizVald != ''"> and biz_vald = #{bizVald}</if>
+            <if test="bizVale != null  and bizVale != ''"> and biz_vale = #{bizVale}</if>
+            <if test="flowNo != null  and flowNo != ''"> and flow_no = #{flowNo}</if>
+            <if test="sort != null  and sort != ''"> and sort = #{sort}</if>
+            <if test="downTicket != null  and downTicket != ''"> and down_ticket = #{downTicket}</if>
+            <if test="size != null "> and size = #{size}</if>
+            <if test="dpi != null "> and dpi = #{dpi}</if>
+            <if test="pages != null "> and pages = #{pages}</if>
+        </where>
+    </select>
+
+    <select id="selectSysUpFileById" parameterType="Long" resultMap="SysUpFileResult">
+        <include refid="selectSysUpFileVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectGetByDocInfoId" parameterType="FileDocVo" resultMap="VoResult">
+        SELECT
+        a.category,
+        a.doc_type,
+        c.*
+        FROM
+        doc_info a
+        LEFT JOIN doc_attachments b ON a.id = b.doc_id
+        LEFT JOIN sys_up_file c ON b.attachments = c.id
+        WHERE
+        a.id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and c.id is not null and a.del_flag = '0' and a.archive_status = '0'
+    </select>
+
+    <select id="selectGetByDocManageInfoId" parameterType="FileDocVo" resultMap="VoResult">
+        SELECT
+        a.category,
+        a.doc_type,
+        c.*
+        FROM
+        doc_info a
+        LEFT JOIN doc_attachments b ON a.id = b.doc_id
+        LEFT JOIN sys_up_file c ON b.attachments = c.id
+        WHERE
+        a.id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and c.id is not null and a.del_flag = '0' and a.archive_status = '2' and c.del_flag = '0'
+    </select>
+
+    <select id="selectScatterFileList" parameterType="SysUpFile" resultMap="SysUpFileResult">
+        <include refid="selectSysUpFileVo"/>
+        WHERE
+        id NOT IN (SELECT attachments FROM doc_attachments)
+    </select>
+    <select id="queryVolumeFile" parameterType="SysUpFile" resultMap="SysUpFileResult">
+        <include refid="selectSysUpFileVo"/>
+        WHERE
+        id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="queryGetByRecycleInfoId" parameterType="FileDocVo" resultMap="VoResult">
+        SELECT
+        a.category,
+        a.doc_type,
+        c.*
+        FROM
+        doc_info a
+        LEFT JOIN doc_attachments b ON a.id = b.doc_id
+        LEFT JOIN sys_up_file c ON b.attachments = c.id
+        WHERE
+        a.id IN
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and c.id is not null and a.del_flag = '1' and c.del_flag = '0'
+    </select>
+
+    <select id="turnIdByAttachmentList" parameterType="SysUpFile" resultMap="SysUpFileResult">
+        SELECT
+            c.*
+        FROM
+            doc_turn a
+                LEFT JOIN turn_attachment b ON a.id = b.turn_id
+                LEFT JOIN sys_up_file c ON b.attachment = c.id
+        WHERE
+            a.id = #{turnId}
+          and c.id is not null
+    </select>
+    <select id="getNewNameByDocInfoId" resultType="java.lang.Long">
+        select id from doc_info where ori_doc_id = #{newName}
+    </select>
+    <select id="selectFileIdbyNewName" resultType="java.lang.Long">
+        select id from sys_up_file where new_name = #{newName}
+    </select>
+
+
+    <insert id="insertSysUpFile" parameterType="SysUpFile" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_up_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeType != null">store_type,</if>
+            <if test="name != null">name,</if>
+            <if test="oriName != null">ori_name,</if>
+            <if test="newName != null">new_name,</if>
+            <if test="path != null">path,</if>
+            <if test="url != null">url,</if>
+            <if test="md5 != null and md5 != ''">md5,</if>
+            <if test="type != null">type,</if>
+            <if test="bizType != null">biz_type,</if>
+            <if test="docinfoId != null">docinfo_id,</if>
+            <if test="bizValb != null">biz_valb,</if>
+            <if test="bizValc != null">biz_valc,</if>
+            <if test="bizVald != null">biz_vald,</if>
+            <if test="bizVale != null">biz_vale,</if>
+            <if test="flowNo != null">flow_no,</if>
+            <if test="sort != null">sort,</if>
+            <if test="bizId != null">biz_id,</if>
+            <if test="downTicket != null">down_ticket,</if>
+            <if test="size != null">size,</if>
+            <if test="dpi != null">dpi,</if>
+            <if test="pages != null">pages,</if>
+
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeType != null">#{storeType},</if>
+            <if test="name != null">#{name},</if>
+            <if test="oriName != null">#{oriName},</if>
+            <if test="newName != null">#{newName},</if>
+            <if test="path != null">#{path},</if>
+            <if test="url != null">#{url},</if>
+            <if test="md5 != null and md5 != ''">#{md5},</if>
+            <if test="type != null">#{type},</if>
+            <if test="bizType != null">#{bizType},</if>
+            <if test="docinfoId != null">#{docinfoId},</if>
+            <if test="bizValb != null">#{bizValb},</if>
+            <if test="bizValc != null">#{bizValc},</if>
+            <if test="bizVald != null">#{bizVald},</if>
+            <if test="bizVale != null">#{bizVale},</if>
+            <if test="flowNo != null">#{flowNo},</if>
+            <if test="sort != null">#{sort},</if>
+
+            <if test="bizId != null">#{bizId},</if>
+            <if test="downTicket != null">#{downTicket},</if>
+            <if test="size != null">#{size},</if>
+            <if test="dpi != null">#{dpi},</if>
+            <if test="pages != null">#{pages},</if>
+
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysUpFile" parameterType="SysUpFile">
+        update sys_up_file
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="storeType != null">store_type = #{storeType},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="oriName != null">ori_name = #{oriName},</if>
+            <if test="newName != null">new_name = #{newName},</if>
+            <if test="path != null">path = #{path},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="md5 != null and md5 != ''">md5 = #{md5},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="bizType != null">biz_type = #{bizType},</if>
+            <if test="docinfoId != null">docinfo_id = #{docinfoId},</if>
+            <if test="bizValb != null">biz_valb = #{bizValb},</if>
+            <if test="bizValc != null">biz_valc = #{bizValc},</if>
+            <if test="bizVald != null">biz_vald = #{bizVald},</if>
+            <if test="bizVale != null">biz_vale = #{bizVale},</if>
+            <if test="flowNo != null">flow_no = #{flowNo},</if>
+            <if test="sort != null">sort = #{sort},</if>
+
+            <if test="bizId != null">biz_id = #{bizId},</if>
+            <if test="downTicket != null">down_ticket = #{downTicket},</if>
+            <if test="size != null">size = #{size},</if>
+            <if test="dpi != null">dpi = #{pages},</if>
+            <if test="pages != null">dpi = #{pages},</if>
+
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateSysUpFileVO" parameterType="SysUpFile">
+        update sys_up_file
+        set pages = #{pages}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysUpFileById" parameterType="Long">
+        delete from sys_up_file where id = #{id}
+    </delete>
+
+    <delete id="deleteSysUpFileByIds" parameterType="String">
+        delete from sys_up_file where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and id is not null
+    </delete>
+</mapper>
